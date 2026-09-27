@@ -5,6 +5,7 @@ import { Cursor, ScrollProgress, SiteHeader } from "@/components/site-ui";
 import { SmoothScroll } from "@/components/smooth-scroll";
 import { ScrollDirector } from "@/components/scroll-director";
 import "./globals.css";
+import "./portfolio-effects.css";
 
 const display = Manrope({
   subsets: ["latin"],
@@ -26,18 +27,18 @@ const siteUrl =
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Amal Joy — Robotics & Automation Engineer",
+    default: "Amal Joy — Intelligent Automation & Robotics Engineer",
     template: "%s · Amal Joy",
   },
   description:
-    "Amal Joy is a Robotics and Automation Engineer building dependable control systems across marine, aerospace, and industrial environments.",
+    "Amal Joy is an Automation and Robotics Engineer building dependable PLC, SCADA, marine, aerospace, and Industry 4.0 control systems.",
   alternates: {
     canonical: siteUrl,
   },
   openGraph: {
     type: "website",
     url: siteUrl,
-    title: "Amal Joy — Robotics & Automation Engineer",
+    title: "Amal Joy — Intelligent Automation & Robotics Engineer",
     description:
       "Automation across marine vessels, aerospace facilities, and industrial processes.",
     siteName: "Amal Joy",
@@ -56,7 +57,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#070a0c",
+  themeColor: "#050505",
   colorScheme: "dark",
 };
 
@@ -77,3 +78,4 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
     </html>
   );
 }
+
