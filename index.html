@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#060707" />
+    <meta name="theme-color" content="#06111d" />
     <meta
       name="description"
       content="Amal Joy is a Robotics and Automation Engineer working across marine, aerospace, and industrial control systems."
@@ -17,12 +17,29 @@
     />
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="immersive.css" />
+    <link rel="stylesheet" href="ocean-glass.css" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <div class="site-grid" aria-hidden="true"></div>
     <div class="ambient ambient-one" aria-hidden="true"></div>
     <div class="ambient ambient-two" aria-hidden="true"></div>
+
+    <div class="hero-visual hero-stage" role="img" aria-label="Interactive 3D study of control systems and marine engine automation">
+      <canvas class="scene3d-canvas" aria-hidden="true"></canvas>
+      <div class="scene-atmosphere" aria-hidden="true"></div>
+      <div class="scene-vignette" aria-hidden="true"></div>
+      <div class="scene-fallback" aria-hidden="true">
+        <div class="fallback-orbit orbit-a"></div><div class="fallback-orbit orbit-b"></div>
+        <div class="fallback-rack"><i></i><i></i><i></i><span>AJ</span></div>
+      </div>
+      <div class="scene-readout scene-readout-top" aria-hidden="true"><span data-scene-title>FIG. 01 / SYSTEM STUDY</span><b data-scene-flow>FIELD → PLC → HMI</b></div>
+      <div class="scene-hud hud-plc" aria-hidden="true"><i></i><span data-scene-label="0">01 / CONTROL</span><strong data-scene-value="0">PLC · S7-1500</strong></div>
+      <div class="scene-hud hud-scada" aria-hidden="true"><i></i><span data-scene-label="1">02 / VISUAL</span><strong data-scene-value="1">SCADA · WinCC</strong></div>
+      <div class="scene-hud hud-field" aria-hidden="true"><i></i><span data-scene-label="2">03 / FIELD</span><strong data-scene-value="2">IO · SIMOCODE</strong></div>
+      <div class="scene-axis-label" aria-hidden="true"><span>X</span><span>Y</span><span>Z</span></div>
+      <div class="scene-readout scene-readout-bottom" aria-hidden="true"><span>ILLUSTRATIVE CONTROL ARCHITECTURE</span><span>NOT LIVE TELEMETRY</span></div>
+    </div>
 
     <div class="page-shell">
       <header class="site-header">
@@ -47,6 +64,7 @@
         <nav id="site-nav" class="site-nav" aria-label="Main navigation">
           <a href="#profile">Profile</a>
           <a href="#experience">Experience</a>
+          <a href="#marine-systems">Marine</a>
           <a href="#projects">Projects</a>
           <a href="#expertise">Expertise</a>
           <a href="#contact">Contact</a>
@@ -75,22 +93,6 @@
             <div class="hero-meta" aria-label="Areas of experience">
               <span>MARINE</span><i></i><span>AEROSPACE</span><i></i><span>INDUSTRIAL</span>
             </div>
-          </div>
-
-          <div class="hero-visual hero-stage" role="img" aria-label="Interactive 3D visualization of an industrial automation control core">
-            <canvas class="scene3d-canvas" aria-hidden="true"></canvas>
-            <div class="scene-atmosphere" aria-hidden="true"></div>
-            <div class="scene-vignette" aria-hidden="true"></div>
-            <div class="scene-fallback" aria-hidden="true">
-              <div class="fallback-orbit orbit-a"></div><div class="fallback-orbit orbit-b"></div>
-              <div class="fallback-rack"><i></i><i></i><i></i><span>AJ</span></div>
-            </div>
-            <div class="scene-readout scene-readout-top" aria-hidden="true"><span>FIG. 01 / SYSTEM STUDY</span><b>FIELD → PLC → HMI</b></div>
-            <div class="scene-hud hud-plc" aria-hidden="true"><i></i><span>01 / CONTROL</span><strong>PLC · S7-1500</strong></div>
-            <div class="scene-hud hud-scada" aria-hidden="true"><i></i><span>02 / VISUAL</span><strong>SCADA · WinCC</strong></div>
-            <div class="scene-hud hud-field" aria-hidden="true"><i></i><span>03 / FIELD</span><strong>IO · SIMOCODE</strong></div>
-            <div class="scene-axis-label" aria-hidden="true"><span>X</span><span>Y</span><span>Z</span></div>
-            <div class="scene-readout scene-readout-bottom" aria-hidden="true"><span>ILLUSTRATIVE CONTROL ARCHITECTURE</span><span>NOT LIVE TELEMETRY</span></div>
           </div>
 
           <a class="scroll-cue" href="#profile"><span>SCROLL TO EXPLORE</span><i aria-hidden="true"></i></a>
@@ -158,8 +160,26 @@
           </div>
         </section>
 
+        <section id="marine-systems" class="section marine-section" aria-labelledby="marine-title" data-scene-chapter="marine">
+          <div class="section-kicker reveal"><span>03</span><i></i><span>MARINE AUTOMATION</span></div>
+          <div class="marine-layout">
+            <div class="marine-intro reveal">
+              <p class="eyebrow">ENGINE ROOM / SYSTEM STUDY</p>
+              <h2 id="marine-title">One vessel.<br /><em>One connected system.</em></h2>
+              <p>Marine control brings propulsion, power, machinery monitoring, and bridge safety into one dependable operating picture.</p>
+              <div class="marine-note"><span class="marine-note-pulse"></span><span>Illustrative 3D model · no live vessel data</span></div>
+            </div>
+            <div class="marine-systems-grid reveal" aria-label="Marine automation system areas">
+              <article class="marine-system-card"><span>01 / PROPULSION</span><strong>Engine control</strong><small>Speed · pressure · alarms</small></article>
+              <article class="marine-system-card"><span>02 / ELECTRICAL</span><strong>Power management</strong><small>Generators · load sharing</small></article>
+              <article class="marine-system-card"><span>03 / MACHINERY</span><strong>Integrated automation</strong><small>Monitoring · trends · events</small></article>
+              <article class="marine-system-card"><span>04 / BRIDGE</span><strong>Navigation safety</strong><small>Interfaces · system status</small></article>
+            </div>
+          </div>
+        </section>
+
         <section id="projects" class="section projects-section" aria-labelledby="projects-title">
-          <div class="section-kicker reveal"><span>03</span><i></i><span>SELECTED SYSTEMS</span></div>
+          <div class="section-kicker reveal"><span>04</span><i></i><span>SELECTED SYSTEMS</span></div>
           <div class="section-heading reveal">
             <div><p class="eyebrow">PROJECT ARCHIVE</p><h2 id="projects-title">Systems built for <em>real conditions.</em></h2></div>
             <p>Control, monitoring, and safety work across aerospace, process, and marine environments.</p>
@@ -211,7 +231,7 @@
         </section>
 
         <section id="expertise" class="section expertise-section" aria-labelledby="expertise-title">
-          <div class="section-kicker reveal"><span>04</span><i></i><span>ENGINEERING TOOLKIT</span></div>
+          <div class="section-kicker reveal"><span>05</span><i></i><span>ENGINEERING TOOLKIT</span></div>
           <div class="section-heading reveal">
             <div><p class="eyebrow">PLATFORMS &amp; METHODS</p><h2 id="expertise-title">From controller to <em>operator.</em></h2></div>
             <p>A practical stack for building, integrating, and supporting automation systems.</p>
@@ -222,11 +242,11 @@
             <article class="toolkit-card reveal"><span class="toolkit-index">03</span><div class="toolkit-icon icon-code" aria-hidden="true"><i>&lt;/&gt;</i></div><h3>Programming</h3><p>Controller languages and scripting for system customization.</p><div class="tool-list"><span>STL · SCL · LAD · FBD · SFC</span><span>Python · VBScript · C · Java</span><span>Siemens TIA Portal</span><span>SQL Server · data logging</span></div></article>
             <article class="toolkit-card reveal"><span class="toolkit-index">04</span><div class="toolkit-icon icon-network" aria-hidden="true"><i></i><i></i><i></i><i></i></div><h3>Networks &amp; Integration</h3><p>Connecting controls, instruments, drives, and supervisory systems.</p><div class="tool-list"><span>PROFINET · PROFIBUS · Ethernet/IP</span><span>Modbus RTU / TCP · OPC UA</span><span>MQTT · HART · IEC 61850 · SNMP</span><span>Honeywell C300 DCS</span></div></article>
           </div>
-          <div class="field-note reveal"><span class="field-note-mark">i</span><p><strong>Field engineering:</strong> VFD and servo setup, instrumentation calibration, system installation, testing, troubleshooting, operator support, and commissioning.</p><span class="field-note-index">METHOD / 04.01</span></div>
+          <div class="field-note reveal"><span class="field-note-mark">i</span><p><strong>Field engineering:</strong> VFD and servo setup, instrumentation calibration, system installation, testing, troubleshooting, operator support, and commissioning.</p><span class="field-note-index">METHOD / 05.01</span></div>
         </section>
 
         <section class="section credentials-section" aria-labelledby="credentials-title">
-          <div class="section-kicker reveal"><span>05</span><i></i><span>FOUNDATION</span></div>
+          <div class="section-kicker reveal"><span>06</span><i></i><span>FOUNDATION</span></div>
           <div class="credentials-layout">
             <div class="education-card reveal">
               <p class="eyebrow">EDUCATION</p><span class="credential-year">2020 — 2024</span>
@@ -249,7 +269,7 @@
           <div class="contact-panel reveal">
             <div class="contact-grid-mark" aria-hidden="true"></div>
             <div class="contact-content">
-              <div class="section-kicker"><span>06</span><i></i><span>CONTACT</span></div>
+              <div class="section-kicker"><span>07</span><i></i><span>CONTACT</span></div>
               <p class="eyebrow">OPEN CHANNEL</p>
               <h2 id="contact-title">Let's build systems <em>that work.</em></h2>
               <p>For automation roles, project conversations, and engineering collaboration.</p>
