@@ -1,5 +1,7 @@
 import { MagneticLink } from "@/components/site-ui";
 import { SceneLayer } from "@/components/scene-layer";
+import { ProjectCard } from "@/components/project-card";
+import { ContactForm } from "@/components/contact-form";
 
 const resumeUrl =
   (process.env.NEXT_PUBLIC_BASE_PATH || "") + "/assets/docs/Amal_Joy_Resume.pdf";
@@ -341,23 +343,30 @@ export function Portfolio() {
           <div className="hero-content page-gutter">
             <p className="hero-kicker hero-intro">
               <span className="status-pulse" />
-              ROBOTICS &amp; AUTOMATION ENGINEER
+              AUTOMATION / ROBOTICS / CONTROLS
               <span className="kicker-location">ERNAKULAM, INDIA</span>
             </p>
             <h1 id="hero-title">
-              <span className="sr-only">I build the logic behind what moves.</span>
+              <span className="sr-only">Engineering Intelligent Automation</span>
               <span className="hero-line" aria-hidden="true">
-                <span className="split-word">I build the</span>
+                <span className="split-word">Engineering</span>
               </span>
               <span className="hero-line" aria-hidden="true">
-                <span className="split-word">logic behind</span>
+                <span className="split-word">Intelligent</span>
               </span>
               <span className="hero-line hero-line-accent" aria-hidden="true">
-                <span className="split-word">what moves.</span>
+                <span className="split-word">Automation</span>
               </span>
             </h1>
+            <p className="hero-specialty hero-intro">
+              <span>Automation Engineer</span><i />
+              <span>Robotics Engineer</span><i />
+              <span>PLC</span><i />
+              <span>SCADA</span><i />
+              <span>Industry 4.0</span>
+            </p>
             <p className="hero-summary hero-intro">
-              Engineering automation for marine vessels, aerospace facilities, and industrial processes.
+              I build the logic behind what moves — engineering automation for marine vessels, aerospace facilities, and industrial processes.
             </p>
             <div className="hero-actions hero-intro">
               <MagneticLink className="button button-primary" href={resumeUrl} download="Amal_Joy_Resume.pdf">
@@ -403,6 +412,20 @@ export function Portfolio() {
                   <div><span>EDUCATION</span><strong>B.Tech · Robotics &amp; Automation</strong></div>
                   <div><span>APPROACH</span><strong>Design · Integrate · Commission</strong></div>
                 </div>
+              </div>
+            </div>
+            <div className="proof-stats" aria-label="Portfolio overview" data-reveal>
+              <div className="proof-stat" aria-label="Seven featured project studies">
+                <span className="proof-stat-value" data-count="7" aria-hidden="true">07</span>
+                <span className="mono-label">SYSTEM STUDIES</span>
+              </div>
+              <div className="proof-stat" aria-label="Three engineering sectors">
+                <span className="proof-stat-value" data-count="3" aria-hidden="true">03</span>
+                <span className="mono-label">ENGINEERING SECTORS</span>
+              </div>
+              <div className="proof-stat" aria-label="Four professional certifications">
+                <span className="proof-stat-value" data-count="4" aria-hidden="true">04</span>
+                <span className="mono-label">CERTIFICATIONS</span>
               </div>
             </div>
             <div className="about-quote" data-reveal>
@@ -487,7 +510,7 @@ export function Portfolio() {
           <div className="work-stage">
             <div className="project-track">
               {projects.map((project) => (
-                <article className="project-card" key={project.id} data-reveal>
+                <ProjectCard key={project.id} id={project.id} systemNote={project.data}>
                   <div className="project-topline">
                     <span>SYS / {project.id}</span>
                     <span>{project.domain}</span>
@@ -503,7 +526,7 @@ export function Portfolio() {
                     <span>CONTROL / MONITOR / IMPROVE</span>
                     <span aria-hidden="true">↗</span>
                   </div>
-                </article>
+                </ProjectCard>
               ))}
             </div>
             <div className="work-stage-note mono-label"><span>DRAG / SCROLL TO EXPLORE</span><span>01 — 07</span></div>
@@ -589,6 +612,7 @@ export function Portfolio() {
                   <a href="https://www.linkedin.com/in/amal-joy-9622a4202" target="_blank" rel="noopener noreferrer"><span>LINKEDIN</span><strong>amal-joy-9622a4202</strong><b aria-hidden="true">↗</b></a>
                   <div><span>LOCATION</span><strong>Ernakulam, Kerala, India</strong></div>
                 </div>
+                <ContactForm />
               </div>
             </div>
           </div>
@@ -601,8 +625,13 @@ export function Portfolio() {
           <span>AMAL JOY</span>
         </a>
         <p className="mono-label">CONTROL <i>·</i> AUTOMATION <i>·</i> RELIABILITY</p>
-        <a className="back-top" href="#home">BACK TO TOP <span aria-hidden="true">↑</span></a>
+        <div className="footer-links">
+          <a className="footer-social" href="https://github.com/amalj007" target="_blank" rel="noopener noreferrer">GITHUB <span aria-hidden="true">↗</span></a>
+          <a className="footer-social" href="https://www.linkedin.com/in/amal-joy-9622a4202" target="_blank" rel="noopener noreferrer">LINKEDIN <span aria-hidden="true">↗</span></a>
+          <a className="back-top" href="#home">BACK TO TOP <span aria-hidden="true">↑</span></a>
+        </div>
       </footer>
     </>
   );
 }
+

@@ -204,6 +204,133 @@ function FloatingMarkers({ motionDisabled }: { motionDisabled: RefObject<boolean
   );
 }
 
+function AutomationArtifacts({ motionDisabled }: { motionDisabled: RefObject<boolean> }) {
+  const gear = useRef<THREE.Group>(null);
+  const robot = useRef<THREE.Group>(null);
+  const plc = useRef<THREE.Group>(null);
+  const { size } = useThree();
+
+  useFrame(({ clock }) => {
+    if (motionDisabled.current) return;
+    const time = clock.elapsedTime;
+    if (gear.current) gear.current.rotation.z = time * 0.045;
+    if (robot.current) {
+      robot.current.rotation.y = Math.sin(time * 0.19) * 0.06;
+      robot.current.rotation.z = Math.sin(time * 0.23) * 0.025;
+    }
+    if (plc.current) plc.current.position.y = -1.68 + Math.sin(time * 0.32) * 0.045;
+  });
+
+  if (size.width < 760) return null;
+
+  const toothAngles = Array.from({ length: 8 }, (_, index) => (index * Math.PI * 2) / 8);
+  return (
+    <group>
+      <group ref={gear} position={[-3.15, 1.55, 0.45]} scale={0.35}>
+        <mesh>
+          <torusGeometry args={[0.9, 0.12, 10, 48]} />
+          <meshStandardMaterial color="#a8fff0" metalness={0.84} roughness={0.2} emissive="#1a827d" emissiveIntensity={0.14} />
+        </mesh>
+        <mesh>
+          <torusGeometry args={[0.42, 0.055, 8, 32]} />
+          <meshPhysicalMaterial color="#c8fff8" metalness={0.64} roughness={0.16} transmission={0.12} clearcoat={1} />
+        </mesh>
+        {toothAngles.map((angle) => (
+          <mesh key={angle} position={[Math.cos(angle) * 0.94, Math.sin(angle) * 0.94, 0]} rotation={[0, 0, angle]}>
+            <boxGeometry args={[0.28, 0.21, 0.16]} />
+            <meshStandardMaterial color="#8bb8b5" metalness={0.86} roughness={0.22} />
+          </mesh>
+        ))}
+        <mesh>
+          <cylinderGeometry args={[0.18, 0.18, 0.25, 20]} />
+          <meshStandardMaterial color="#18282b" metalness={0.92} roughness={0.19} />
+        </mesh>
+      </group>
+
+      <group ref={plc} position={[-2.95, -1.68, 0.62]} scale={0.42}>
+        <mesh>
+          <boxGeometry args={[1.15, 1.7, 0.42]} />
+          <meshStandardMaterial color="#26383a" metalness={0.7} roughness={0.3} />
+        </mesh>
+        <mesh position={[0, 0, 0.23]}>
+          <boxGeometry args={[0.84, 1.37, 0.045]} />
+          <meshPhysicalMaterial color="#9cb7b2" metalness={0.15} roughness={0.17} transmission={0.52} clearcoat={1} />
+        </mesh>
+        <mesh position={[0, 0.31, 0.27]}>
+          <boxGeometry args={[0.57, 0.36, 0.035]} />
+          <meshStandardMaterial color="#092326" emissive="#00d9e8" emissiveIntensity={0.35} roughness={0.22} />
+        </mesh>
+        {[-0.34, -0.11, 0.12, 0.35].map((x, index) => (
+          <mesh key={x} position={[x, -0.29, 0.27]}>
+            <sphereGeometry args={[0.055, 12, 12]} />
+            <meshBasicMaterial color={index === 1 ? "#00e5ff" : "#8ea7a2"} />
+          </mesh>
+        ))}
+      </group>
+
+      <group ref={robot} position={[3.05, 1.2, 0.16]} scale={0.34}>
+        <mesh position={[0, -0.54, 0]}>
+          <cylinderGeometry args={[0.5, 0.56, 0.22, 28]} />
+          <meshStandardMaterial color="#17282b" metalness={0.88} roughness={0.22} />
+        </mesh>
+        <mesh position={[0, -0.29, 0]}>
+          <sphereGeometry args={[0.23, 20, 20]} />
+          <meshStandardMaterial color="#82d5c8" metalness={0.78} roughness={0.2} emissive="#184c4c" emissiveIntensity={0.2} />
+        </mesh>
+        <group position={[0, -0.24, 0]} rotation={[0, 0, -0.38]}>
+          <mesh position={[0, 0.43, 0]}>
+            <boxGeometry args={[0.22, 0.96, 0.25]} />
+            <meshStandardMaterial color="#29474a" metalness={0.82} roughness={0.22} />
+          </mesh>
+          <mesh position={[0, 0.9, 0]}>
+            <sphereGeometry args={[0.2, 18, 18]} />
+            <meshStandardMaterial color="#91e6d7" metalness={0.78} roughness={0.19} />
+          </mesh>
+          <group position={[0, 0.91, 0]} rotation={[0, 0, 0.76]}>
+            <mesh position={[0, 0.33, 0]}>
+              <boxGeometry args={[0.16, 0.75, 0.18]} />
+              <meshStandardMaterial color="#254043" metalness={0.84} roughness={0.2} />
+            </mesh>
+            <mesh position={[0, 0.73, 0]}>
+              <sphereGeometry args={[0.14, 16, 16]} />
+              <meshStandardMaterial color="#00dff0" metalness={0.68} roughness={0.2} emissive="#146979" emissiveIntensity={0.32} />
+            </mesh>
+            <mesh position={[0.1, 0.86, 0]} rotation={[0, 0, -0.5]}>
+              <boxGeometry args={[0.3, 0.08, 0.1]} />
+              <meshStandardMaterial color="#a9cbc4" metalness={0.88} roughness={0.16} />
+            </mesh>
+          </group>
+        </group>
+      </group>
+
+      <group position={[3.0, -1.62, -0.72]} rotation={[0, -0.08, 0.06]} scale={0.36}>
+        <mesh>
+          <boxGeometry args={[1.7, 1.05, 0.12]} />
+          <meshStandardMaterial color="#0e2227" metalness={0.66} roughness={0.3} emissive="#082e39" emissiveIntensity={0.16} />
+        </mesh>
+        {[
+          [-0.5, 0.15, 0.075, 0.58, 0.035],
+          [-0.18, 0.15, 0.075, 0.035, 0.38],
+          [-0.18, -0.04, 0.075, 0.67, 0.035],
+          [0.18, -0.04, 0.075, 0.035, 0.42],
+          [0.18, -0.23, 0.075, 0.55, 0.035],
+        ].map(([x, y, z, width, height], index) => (
+          <mesh key={index} position={[x, y, z]}>
+            <boxGeometry args={[width, height, 0.018]} />
+            <meshStandardMaterial color={index % 2 ? "#5bc8d3" : "#5bd8b6"} emissive={index % 2 ? "#246a86" : "#286b60"} emissiveIntensity={0.28} />
+          </mesh>
+        ))}
+        {[-0.58, 0.58].map((x) => (
+          <mesh key={x} position={[x, -0.39, 0.09]}>
+            <cylinderGeometry args={[0.07, 0.07, 0.04, 12]} />
+            <meshBasicMaterial color="#00e5ff" />
+          </mesh>
+        ))}
+      </group>
+    </group>
+  );
+}
+
 function SceneDirector() {
   const world = useRef<THREE.Group>(null);
   const controls = useRef<THREE.Group>(null);
@@ -295,6 +422,7 @@ function SceneDirector() {
       <group ref={marine} position={[-0.3, -0.32, -0.6]}>
         <MarineEngine motionDisabled={reducedMotion} />
       </group>
+      <AutomationArtifacts motionDisabled={reducedMotion} />
       <FloatingMarkers motionDisabled={reducedMotion} />
     </group>
   );
@@ -324,3 +452,4 @@ export function WorldCanvas() {
     </Canvas>
   );
 }
+

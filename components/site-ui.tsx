@@ -68,6 +68,22 @@ export function MagneticLink({
 
 export function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
+  const [scrolled, setScrolled] = useState(false);
+
+  function moveGlassReflection(event: ReactPointerEvent<HTMLElement>) {
+    if (event.pointerType === "touch") return;
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const x = ((event.clientX - bounds.left) / bounds.width) * 100;
+    const y = ((event.clientY - bounds.top) / bounds.height) * 100;
+    event.currentTarget.style.setProperty("--glass-x", x.toFixed(1) + "%");
+    event.currentTarget.style.setProperty("--glass-y", y.toFixed(1) + "%");
+  }
+
+  function resetGlassReflection(event: ReactPointerEvent<HTMLElement>) {
+    event.currentTarget.style.setProperty("--glass-x", "82%");
+    event.currentTarget.style.setProperty("--glass-y", "0%");
+  }
 
   useEffect(() => {
     const closeMenu = () => setMenuOpen(false);
@@ -86,8 +102,44 @@ export function SiteHeader() {
     };
   }, []);
 
+  useEffect(() => {
+    const sections = ["#home", ...links.map(([, href]) => href)]
+      .map((href) => document.querySelector<HTMLElement>(href))
+      .filter((section): section is HTMLElement => Boolean(section));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible) setActiveSection(visible.target.id);
+      },
+      { rootMargin: "-22% 0px -62% 0px", threshold: [0, 0.18, 0.35, 0.55] },
+    );
+    sections.forEach((section) => observer.observe(section));
+
+    let frame = 0;
+    const updateScrolled = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        setScrolled(window.scrollY > 20);
+      });
+    };
+    updateScrolled();
+    window.addEventListener("scroll", updateScrolled, { passive: true });
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", updateScrolled);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, []);
+
   return (
-    <header className={"site-header" + (menuOpen ? " menu-open" : "")}>
+    <header
+      className={"site-header" + (menuOpen ? " menu-open" : "") + (scrolled ? " is-scrolled" : "")}
+      onPointerMove={moveGlassReflection}
+      onPointerLeave={resetGlassReflection}
+    >
       <a className="brand" href="#home" aria-label="Amal Joy, home">
         <span className="brand-mark" aria-hidden="true">
           <span>AJ</span>
@@ -113,7 +165,7 @@ export function SiteHeader() {
 
       <nav id="site-nav" className="site-nav glass-panel" aria-label="Main navigation">
         {links.map(([label, href]) => (
-          <a href={href} key={href}>
+          <a href={href} key={href} aria-current={activeSection === href.slice(1) ? "location" : undefined}>
             {label}
           </a>
         ))}
@@ -229,3 +281,4 @@ export function Cursor() {
     </div>
   );
 }
+
