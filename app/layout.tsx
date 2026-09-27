@@ -1,25 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Mono, Manrope } from "next/font/google";
 import type { ReactNode } from "react";
 import { Cursor, ScrollProgress, SiteHeader } from "@/components/site-ui";
 import { SmoothScroll } from "@/components/smooth-scroll";
 import { ScrollDirector } from "@/components/scroll-director";
 import "./globals.css";
 import "./portfolio-effects.css";
-
-const display = Manrope({
-  subsets: ["latin"],
-  variable: "--font-display",
-  display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
-});
-
-const mono = DM_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-  display: "swap",
-  weight: ["400", "500"],
-});
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL || "https://amalj007.github.io/portfolio/";
@@ -64,7 +49,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en">
-      <body className={display.variable + " " + mono.variable}>
+      <body>
         <a className="skip-link" href="#main">
           Skip to content
         </a>
