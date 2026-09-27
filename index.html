@@ -82,54 +82,56 @@
             <div class="visual-crosshair crosshair-one" aria-hidden="true"></div>
             <div class="visual-crosshair crosshair-two" aria-hidden="true"></div>
 
-            <article class="system-panel reveal">
-              <div class="panel-topline">
-                <div class="panel-brand"><span class="panel-symbol">AJ</span><span>CONTROL SYSTEMS <small>ILLUSTRATIVE SYSTEM MAP</small></span></div>
-                <span class="panel-index">SYS / CONCEPT</span>
-              </div>
-              <div class="panel-body">
-                <div class="panel-heading">
-                  <div><span class="micro-label">CONTROL ARCHITECTURE</span><h2>Process visibility</h2></div>
-                  <span class="online-label"><i></i> SCHEMATIC</span>
+            <div class="system-panel-stage">
+              <article class="system-panel reveal">
+                <div class="panel-topline">
+                  <div class="panel-brand"><span class="panel-symbol">AJ</span><span>CONTROL SYSTEMS <small>ILLUSTRATIVE SYSTEM MAP</small></span></div>
+                  <span class="panel-index">SYS / CONCEPT</span>
                 </div>
-                <div class="screen-chart" aria-hidden="true">
-                  <div class="chart-grid"></div>
-                  <div class="chart-scan"></div>
-                  <svg viewBox="0 0 520 114" preserveAspectRatio="none">
-                    <path class="chart-area" d="M0 88 C35 86 35 66 72 69 S120 85 151 58 S203 61 235 49 S290 67 319 43 S365 48 391 31 S437 48 463 24 S495 30 520 12 V114 H0 Z" />
-                    <path class="chart-line" d="M0 88 C35 86 35 66 72 69 S120 85 151 58 S203 61 235 49 S290 67 319 43 S365 48 391 31 S437 48 463 24 S495 30 520 12" />
-                  </svg>
-                  <span class="chart-caption">PROCESS SIGNAL <b>·</b> EXAMPLE TRACE</span>
-                  <span class="chart-unit">ILLUSTRATIVE</span>
-                </div>
+                <div class="panel-body">
+                  <div class="panel-heading">
+                    <div><span class="micro-label">CONTROL ARCHITECTURE</span><h2>Process visibility</h2></div>
+                    <span class="online-label"><i></i> SCHEMATIC</span>
+                  </div>
+                  <div class="screen-chart" aria-hidden="true">
+                    <div class="chart-grid"></div>
+                    <div class="chart-scan"></div>
+                    <svg viewBox="0 0 520 114" preserveAspectRatio="none">
+                      <path class="chart-area" d="M0 88 C35 86 35 66 72 69 S120 85 151 58 S203 61 235 49 S290 67 319 43 S365 48 391 31 S437 48 463 24 S495 30 520 12 V114 H0 Z" />
+                      <path class="chart-line" d="M0 88 C35 86 35 66 72 69 S120 85 151 58 S203 61 235 49 S290 67 319 43 S365 48 391 31 S437 48 463 24 S495 30 520 12" />
+                    </svg>
+                    <span class="chart-caption">PROCESS SIGNAL <b>·</b> EXAMPLE TRACE</span>
+                    <span class="chart-unit">ILLUSTRATIVE</span>
+                  </div>
 
-                <div class="network-label"><span>CONTROL NETWORK</span><span>FIELD → PLC → HMI</span></div>
-                <div class="network-flow">
-                  <div class="network-node">
-                    <span class="node-number">01 / CONTROL</span>
-                    <strong>PLC</strong>
-                    <small>Siemens S7</small>
+                  <div class="network-label"><span>CONTROL NETWORK</span><span>FIELD → PLC → HMI</span></div>
+                  <div class="network-flow">
+                    <div class="network-node">
+                      <span class="node-number">01 / CONTROL</span>
+                      <strong>PLC</strong>
+                      <small>Siemens S7</small>
+                    </div>
+                    <div class="network-wire" aria-hidden="true"><span></span></div>
+                    <div class="network-node">
+                      <span class="node-number">02 / VISUAL</span>
+                      <strong>SCADA</strong>
+                      <small>WinCC</small>
+                    </div>
+                    <div class="network-wire" aria-hidden="true"><span></span></div>
+                    <div class="network-node">
+                      <span class="node-number">03 / FIELD</span>
+                      <strong>IO + VFD</strong>
+                      <small>SIMOCODE · HMI</small>
+                    </div>
                   </div>
-                  <div class="network-wire" aria-hidden="true"><span></span></div>
-                  <div class="network-node">
-                    <span class="node-number">02 / VISUAL</span>
-                    <strong>SCADA</strong>
-                    <small>WinCC</small>
-                  </div>
-                  <div class="network-wire" aria-hidden="true"><span></span></div>
-                  <div class="network-node">
-                    <span class="node-number">03 / FIELD</span>
-                    <strong>IO + VFD</strong>
-                    <small>SIMOCODE · HMI</small>
-                  </div>
-                </div>
 
-                <div class="panel-footer">
-                  <span>PORTFOLIO DIAGRAM <b>·</b> NOT LIVE TELEMETRY</span>
-                  <span class="signal-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+                  <div class="panel-footer">
+                    <span>PORTFOLIO DIAGRAM <b>·</b> NOT LIVE TELEMETRY</span>
+                    <span class="signal-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+                  </div>
                 </div>
-              </div>
-            </article>
+              </article>
+            </div>
             <div class="float-tag float-tag-top"><span class="tag-dot"></span> SAFETY LOGIC</div>
             <div class="float-tag float-tag-bottom">SIGNAL <b>●</b> RESPONSE</div>
           </div>
