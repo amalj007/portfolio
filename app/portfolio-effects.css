@@ -25,6 +25,12 @@
   z-index: 1;
 }
 
+@media (max-width: 819px) {
+  .site-header > .site-nav {
+    position: absolute;
+  }
+}
+
 .site-header.is-scrolled {
   border-color: rgba(197, 248, 255, 0.18);
   background: rgba(6, 10, 13, 0.79);
