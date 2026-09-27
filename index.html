@@ -1,439 +1,315 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#071014" />
     <meta
       name="description"
-      content="Amal Joy - Robotics & Automation Engineer portfolio showcasing industrial automation, PLC, SCADA, robotics, and aerospace systems expertise."
+      content="Amal Joy is a Robotics and Automation Engineer working across marine, aerospace, and industrial control systems."
     />
-    <title>Amal Joy | Robotics & Automation Engineer</title>
+    <title>Amal Joy | Robotics &amp; Automation Engineer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800&family=Poppins:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="cursor-glow"></div>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="site-grid" aria-hidden="true"></div>
+    <div class="ambient ambient-one" aria-hidden="true"></div>
+    <div class="ambient ambient-two" aria-hidden="true"></div>
+
     <div class="page-shell">
       <header class="site-header">
-        <a class="brand" href="#home" aria-label="Amal Joy home">
-          <span class="brand-mark"></span>
-          <span>
+        <a class="brand" href="#home" aria-label="Amal Joy, home">
+          <span class="brand-mark" aria-hidden="true"><span>AJ</span><i></i></span>
+          <span class="brand-copy">
             <strong>AMAL JOY</strong>
-            <small>Robotics & Automation Engineer</small>
+            <small>ROBOTICS <b>/</b> AUTOMATION</small>
           </span>
         </a>
-        <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
-          <span></span><span></span><span></span>
+
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-label="Open navigation"
+          aria-controls="site-nav"
+          aria-expanded="false"
+        >
+          <span></span><span></span>
         </button>
-        <nav class="site-nav" aria-label="Primary navigation">
-          <a href="#home">Home</a>
-          <a href="#about">About</a>
+
+        <nav id="site-nav" class="site-nav" aria-label="Main navigation">
+          <a href="#profile">Profile</a>
           <a href="#experience">Experience</a>
           <a href="#projects">Projects</a>
-          <a href="#skills">Skills</a>
-          <a href="#certifications">Certifications</a>
+          <a href="#expertise">Expertise</a>
           <a href="#contact">Contact</a>
+          <a class="nav-resume" href="assets/docs/Amal_Joy_Resume.pdf" target="_blank" rel="noopener noreferrer">
+            Resume <span aria-hidden="true">↗</span>
+          </a>
         </nav>
       </header>
 
-      <main id="home">
-        <section class="hero section">
-          <div class="hero-copy reveal">
-            <p class="eyebrow">Industrial Automation • Control Systems • Robotics</p>
-            <h1>AMAL JOY</h1>
-            <div class="typing-block">
-              <span class="typing-text" data-words="Robotics & Automation Engineer, PLC & SCADA Engineer, Industrial Automation Specialist"></span>
-              <span class="typing-cursor">|</span>
-            </div>
+      <main id="main">
+        <section class="hero" id="home" aria-labelledby="hero-title">
+          <div class="hero-copy">
+            <p class="eyebrow hero-eyebrow"><span class="status-dot"></span> FIELD SYSTEMS <span class="eyebrow-divider">/</span> 2026</p>
+            <p class="hero-name">AMAL JOY <span>·</span> ENGINEER</p>
+            <h1 id="hero-title">Control systems for a world that <em>can't pause.</em></h1>
             <p class="hero-description">
-              Robotics &amp; Automation Engineer with hands-on experience in Industrial Automation,
-              PLC Programming, SCADA Development, DCS, Robotics, Motion Control, Marine Automation,
-              and Aerospace Automation. Worked on mission-critical systems at ISRO – SDSC SHAR
-              through Proficient Automation and Controls Ltd.
+              Robotics &amp; Automation Engineer working across marine, aerospace, and industrial systems — from PLC logic and operator interfaces to commissioning in the field.
             </p>
+            <p class="current-role"><span class="current-role-line"></span><span>Currently at <strong>Master Systems LLC</strong>, delivering marine automation for vessels and offshore assets.</span></p>
             <div class="hero-actions">
-              <a class="btn btn-primary btn-ripple" href="assets/docs/Amal_Joy_Resume.pdf" target="_blank" rel="noopener noreferrer">Download Resume</a>
-              <a class="btn btn-secondary btn-ripple" href="#projects">View Projects</a>
+              <a class="button button-primary" href="assets/docs/Amal_Joy_Resume.pdf" download="Amal_Joy_Resume.pdf">
+                <span>Download resume</span><span class="button-arrow" aria-hidden="true">↓</span>
+              </a>
+              <a class="button button-quiet" href="#projects">Explore selected work <span aria-hidden="true">↘</span></a>
             </div>
-            <ul class="hero-highlights">
-              <li>PLC / SCADA / DCS Engineering</li>
-              <li>Sequence Control &amp; Interlocks</li>
-              <li>Field Instrumentation &amp; Commissioning</li>
-            </ul>
+            <div class="hero-meta" aria-label="Areas of experience">
+              <span>MARINE</span><i></i><span>AEROSPACE</span><i></i><span>INDUSTRIAL</span>
+            </div>
           </div>
+
+          <div class="hero-visual" aria-label="Illustration of an industrial control system">
+            <div class="visual-orbit orbit-one" aria-hidden="true"></div>
+            <div class="visual-orbit orbit-two" aria-hidden="true"></div>
+            <div class="visual-crosshair crosshair-one" aria-hidden="true"></div>
+            <div class="visual-crosshair crosshair-two" aria-hidden="true"></div>
+
+            <article class="system-panel reveal">
+              <div class="panel-topline">
+                <div class="panel-brand"><span class="panel-symbol">AJ</span><span>CONTROL SYSTEMS <small>ILLUSTRATIVE SYSTEM MAP</small></span></div>
+                <span class="panel-index">SYS / CONCEPT</span>
+              </div>
+              <div class="panel-body">
+                <div class="panel-heading">
+                  <div><span class="micro-label">CONTROL ARCHITECTURE</span><h2>Process visibility</h2></div>
+                  <span class="online-label"><i></i> SCHEMATIC</span>
+                </div>
+                <div class="screen-chart" aria-hidden="true">
+                  <div class="chart-grid"></div>
+                  <div class="chart-scan"></div>
+                  <svg viewBox="0 0 520 114" preserveAspectRatio="none">
+                    <path class="chart-area" d="M0 88 C35 86 35 66 72 69 S120 85 151 58 S203 61 235 49 S290 67 319 43 S365 48 391 31 S437 48 463 24 S495 30 520 12 V114 H0 Z" />
+                    <path class="chart-line" d="M0 88 C35 86 35 66 72 69 S120 85 151 58 S203 61 235 49 S290 67 319 43 S365 48 391 31 S437 48 463 24 S495 30 520 12" />
+                  </svg>
+                  <span class="chart-caption">PROCESS SIGNAL <b>·</b> EXAMPLE TRACE</span>
+                  <span class="chart-unit">ILLUSTRATIVE</span>
+                </div>
+
+                <div class="network-label"><span>CONTROL NETWORK</span><span>FIELD → PLC → HMI</span></div>
+                <div class="network-flow">
+                  <div class="network-node">
+                    <span class="node-number">01 / CONTROL</span>
+                    <strong>PLC</strong>
+                    <small>Siemens S7</small>
+                  </div>
+                  <div class="network-wire" aria-hidden="true"><span></span></div>
+                  <div class="network-node">
+                    <span class="node-number">02 / VISUAL</span>
+                    <strong>SCADA</strong>
+                    <small>WinCC</small>
+                  </div>
+                  <div class="network-wire" aria-hidden="true"><span></span></div>
+                  <div class="network-node">
+                    <span class="node-number">03 / FIELD</span>
+                    <strong>IO + VFD</strong>
+                    <small>SIMOCODE · HMI</small>
+                  </div>
+                </div>
+
+                <div class="panel-footer">
+                  <span>PORTFOLIO DIAGRAM <b>·</b> NOT LIVE TELEMETRY</span>
+                  <span class="signal-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+                </div>
+              </div>
+            </article>
+            <div class="float-tag float-tag-top"><span class="tag-dot"></span> SAFETY LOGIC</div>
+            <div class="float-tag float-tag-bottom">SIGNAL <b>●</b> RESPONSE</div>
+          </div>
+
+          <a class="scroll-cue" href="#profile"><span>SCROLL TO EXPLORE</span><i aria-hidden="true"></i></a>
         </section>
 
-        <section id="about" class="section about">
-          <div class="section-heading reveal">
-            <p class="eyebrow">About</p>
-            <h2>Automation engineering grounded in real industrial delivery.</h2>
-          </div>
-          <div class="about-grid">
-            <div class="about-card reveal">
+        <section id="profile" class="section profile-section" aria-labelledby="profile-title">
+          <div class="section-kicker reveal"><span>01</span><i></i><span>PROFILE</span></div>
+          <div class="profile-layout">
+            <div class="section-intro reveal">
+              <h2 id="profile-title">Engineering from the <em>signal</em> to the commissioned system.</h2>
+            </div>
+            <div class="profile-copy reveal">
               <p>
-                Robotics &amp; Automation Engineer specializing in Industrial Automation, PLC Programming,
-                SCADA Development, DCS, Robotics, Motion Control, Marine Automation, and Aerospace
-                Automation.
+                I design and deliver automation systems that connect equipment, process logic, and the people who operate them. My work spans marine automation and power management, industrial control, and mission-critical aerospace facilities.
               </p>
               <p>
-                Worked on mission-critical automation projects at ISRO – SDSC SHAR through Proficient
-                Automation and Controls Ltd., contributing to robust control solutions for complex
-                industrial processes.
+                At ISRO's SDSC SHAR, I contributed to automated bowl-cleaning and solid-propellant casting systems supporting GSLV and Gaganyaan programs. Today, I work on integrated automation, power management, and navigation safety systems for commercial vessels and offshore assets.
               </p>
-              <ul class="about-list">
-                <li>Experience with Siemens, Schneider Electric, Allen Bradley, and Honeywell platforms.</li>
-                <li>Hands-on exposure to Ignition, WinCC, AVEVA, FactoryTalk, and industrial communication protocols.</li>
-                <li>Focused on engineering execution, system integration, commissioning, and reliable control logic.</li>
-              </ul>
-            </div>
-            <div class="timeline-card reveal">
-              <div class="timeline-item">
-                <span class="timeline-dot"></span>
-                <div>
-                  <h3>Core Engineering Scope</h3>
-                  <p>Control system design, PLC logic, SCADA development, interlocks, safety logic, commissioning, and troubleshooting.</p>
-                </div>
-              </div>
-              <div class="timeline-item">
-                <span class="timeline-dot"></span>
-                <div>
-                  <h3>Industry Exposure</h3>
-                  <p>Launch infrastructure, industrial process plants, marine systems, and aerospace-related automation environments.</p>
-                </div>
-              </div>
-              <div class="timeline-item">
-                <span class="timeline-dot"></span>
-                <div>
-                  <h3>Delivery Focus</h3>
-                  <p>Reliable engineering solutions for safety-critical, high-availability automation systems.</p>
-                </div>
+              <div class="profile-facts">
+                <div><span>BASED IN</span><strong>Ernakulam, Kerala</strong></div>
+                <div><span>EDUCATION</span><strong>B.Tech · Robotics &amp; Automation</strong></div>
+                <div><span>FOCUS</span><strong>Control · Integration · Commissioning</strong></div>
               </div>
             </div>
           </div>
         </section>
 
-        <section id="skills" class="section">
+        <section id="experience" class="section experience-section" aria-labelledby="experience-title">
+          <div class="section-kicker reveal"><span>02</span><i></i><span>EXPERIENCE</span></div>
           <div class="section-heading reveal">
-            <p class="eyebrow">Skills</p>
-            <h2>Core engineering platforms and automation tools.</h2>
+            <div><p class="eyebrow">CAREER LOG</p><h2 id="experience-title">Built in the field.</h2></div>
+            <p>Hands-on engineering across vessel systems, industrial processes, and aerospace facilities.</p>
           </div>
-          <div class="skills-grid">
-            <article class="skill-card reveal">
-              <h3>PLC</h3>
-              <ul>
-                <li>Siemens S7-1200</li>
-                <li>S7-1500</li>
-                <li>S7-300</li>
-                <li>S7-400</li>
-                <li>S7-405H</li>
-                <li>Allen Bradley</li>
-                <li>Schneider M221</li>
-                <li>M340</li>
-                <li>M580</li>
-              </ul>
+
+          <div class="experience-list">
+            <article class="experience-item reveal">
+              <div class="experience-date"><span>SEP 2026</span><i></i><span>PRESENT</span></div>
+              <div class="experience-main">
+              <div class="experience-title"><div><h3>Master Systems LLC</h3><p>Automation Engineer</p></div><span class="experience-current"><i></i> CURRENT</span></div>
+                <p>Delivering integrated automation, power management, and navigation safety systems for commercial vessels and offshore assets.</p>
+                <div class="tag-row"><span>IAS</span><span>PMS</span><span>Navigation Safety</span><span>Marine Systems</span></div>
+              </div>
+              <span class="experience-seq">01</span>
             </article>
-            <article class="skill-card reveal">
-              <h3>SCADA</h3>
-              <ul>
-                <li>Ignition</li>
-                <li>WinCC</li>
-                <li>WinCC Unified</li>
-                <li>WinCC OA</li>
-                <li>AVEVA InTouch</li>
-                <li>AVEVA Edge</li>
-                <li>FactoryTalk View</li>
-                <li>Plant SCADA</li>
-              </ul>
+
+            <article class="experience-item reveal">
+              <div class="experience-date"><span>NOV 2025</span><i></i><span>AUG 2026</span></div>
+              <div class="experience-main">
+                <div class="experience-title"><div><h3>Proficient Automation and Controls Ltd.</h3><p>Project Engineer · ISRO SDSC SHAR</p></div></div>
+                <p>Developed PLC sequence logic for solid-propellant casting and bowl-cleaning systems. Integrated motor management, hydraulic control, field HMI, WinCC SCADA, and safety interlocks.</p>
+                <div class="tag-row"><span>Siemens S7-1500 / S7-405H</span><span>WinCC</span><span>SIMOCODE pro</span><span>Commissioning</span></div>
+              </div>
+              <span class="experience-seq">02</span>
             </article>
-            <article class="skill-card reveal">
-              <h3>Programming</h3>
-              <ul>
-                <li>SCL</li>
-                <li>STL</li>
-                <li>LAD</li>
-                <li>FBD</li>
-                <li>SFC</li>
-                <li>Python</li>
-                <li>VBScript</li>
-                <li>Java</li>
-                <li>C</li>
-              </ul>
-            </article>
-            <article class="skill-card reveal">
-              <h3>Protocols</h3>
-              <ul>
-                <li>PROFINET</li>
-                <li>PROFIBUS</li>
-                <li>Ethernet/IP</li>
-                <li>Modbus TCP</li>
-                <li>Modbus RTU</li>
-                <li>OPC UA</li>
-                <li>MQTT</li>
-                <li>IEC 61850</li>
-                <li>HART</li>
-                <li>SNMP</li>
-              </ul>
+
+            <article class="experience-item reveal">
+              <div class="experience-date"><span>OCT 2024</span><i></i><span>OCT 2025</span></div>
+              <div class="experience-main">
+                <div class="experience-title"><div><h3>SMEC Automation Pvt Ltd.</h3><p>Automation Engineer</p></div></div>
+                <p>Designed and programmed marine and industrial PLC systems, developed SCADA applications, integrated communication protocols, and supported field instrumentation, installation, and troubleshooting.</p>
+                <div class="tag-row"><span>PLC Programming</span><span>SCADA</span><span>Instrumentation</span><span>System Integration</span></div>
+              </div>
+              <span class="experience-seq">03</span>
             </article>
           </div>
         </section>
 
-        <section id="expertise" class="section">
+        <section id="projects" class="section projects-section" aria-labelledby="projects-title">
+          <div class="section-kicker reveal"><span>03</span><i></i><span>SELECTED SYSTEMS</span></div>
           <div class="section-heading reveal">
-            <p class="eyebrow">Core Expertise</p>
-            <h2>Focused engineering capability across the automation lifecycle.</h2>
+            <div><p class="eyebrow">PROJECT ARCHIVE</p><h2 id="projects-title">Systems built for <em>real conditions.</em></h2></div>
+            <p>Control, monitoring, and safety work across aerospace, process, and marine environments.</p>
           </div>
-          <div class="expertise-grid">
-            <article class="expertise-card reveal">
-              <span class="expertise-icon">PLC</span>
-              <h3>PLC Programming</h3>
-              <p>Sequential logic, interlocks, safety logic, and control strategy implementation.</p>
+
+          <div class="project-grid">
+            <article class="project-card project-feature reveal">
+              <div class="project-top"><span class="project-code">SYS / 01</span><span class="project-domain">AEROSPACE · ISRO SDSC SHAR</span></div>
+              <div class="project-graphic graphic-flow" aria-hidden="true"><span class="graphic-line"></span><span class="graphic-node node-a">PLC</span><span class="graphic-node node-b">SIMOCODE</span><span class="graphic-node node-c">HMI</span><span class="graphic-pulse"></span></div>
+              <div class="project-content"><p class="project-type">SEQUENCE CONTROL</p><h3>Bowl Cleaning Facility</h3><p>Automated cleaning sequence for propellant casting preparation, with Siemens S7-1500 logic, SIMOCODE motor management, Parker hydraulic control, field HMI, and WinCC visualization.</p><div class="tag-row"><span>S7-1500</span><span>WinCC</span><span>Hydraulic Control</span></div></div>
+              <span class="project-arrow" aria-hidden="true">↗</span>
             </article>
-            <article class="expertise-card reveal">
-              <span class="expertise-icon">SC</span>
-              <h3>SCADA Development</h3>
-              <p>Operator interfaces, trending, alarms, supervisory control, and process visibility.</p>
+
+            <article class="project-card reveal">
+              <div class="project-top"><span class="project-code">SYS / 02</span><span class="project-domain">AEROSPACE · ISRO SDSC SHAR</span></div>
+              <div class="project-graphic graphic-redundant" aria-hidden="true"><span class="redundant-line"></span><span class="redundant-node">PLC A</span><span class="redundant-node">PLC B</span><span class="redundant-core">H</span></div>
+              <div class="project-content"><p class="project-type">HIGH AVAILABILITY</p><h3>Solid Propellant Casting</h3><p>Automatic process sequencing for GSLV and Gaganyaan launch-vehicle programs using a redundant Siemens S7-405H control system and SCADA monitoring.</p><div class="tag-row"><span>S7-405H</span><span>Redundancy</span><span>Interlocks</span></div></div>
+              <span class="project-arrow" aria-hidden="true">↗</span>
             </article>
-            <article class="expertise-card reveal">
-              <span class="expertise-icon">RB</span>
-              <h3>Industrial Robotics</h3>
-              <p>Robot integration, motion coordination, and automation of production workflows.</p>
+
+            <article class="project-card reveal">
+              <div class="project-top"><span class="project-code">SYS / 03</span><span class="project-domain">PROPULSION</span></div>
+              <div class="project-graphic graphic-events" aria-hidden="true"><span>ALARM <b>ACK</b></span><span>EVENT <b>LOG</b></span><span>HISTORY <b>READY</b></span><i></i></div>
+              <div class="project-content"><p class="project-type">ALARM MANAGEMENT</p><h3>Hybrid Propulsion Monitoring</h3><p>Configured alarms, acknowledgement, event handling, and historical diagnostics for a redundant Siemens PCS 7 and S7-405H propulsion control system.</p><div class="tag-row"><span>PCS 7</span><span>S7-405H</span><span>Diagnostics</span></div></div>
+              <span class="project-arrow" aria-hidden="true">↗</span>
             </article>
-            <article class="expertise-card reveal">
-              <span class="expertise-icon">IA</span>
-              <h3>Industrial Automation</h3>
-              <p>End-to-end automation architecture for process and manufacturing systems.</p>
+
+            <article class="project-card reveal">
+              <div class="project-top"><span class="project-code">SYS / 04</span><span class="project-domain">PROCESS CONTROL</span></div>
+              <div class="project-graphic graphic-gauge" aria-hidden="true"><span class="gauge-ring"></span><span class="gauge-needle"></span><span class="gauge-center"></span><small>PRESSURE</small></div>
+              <div class="project-content"><p class="project-type">PROCESS AUTOMATION</p><h3>Boiler Control System</h3><p>Schneider Modicon M340 control and SCADA monitoring for boiler operations, including startup and shutdown logic, pressure and temperature monitoring, and protective interlocks.</p><div class="tag-row"><span>M340</span><span>SCADA</span><span>Safety Logic</span></div></div>
+              <span class="project-arrow" aria-hidden="true">↗</span>
             </article>
-            <article class="expertise-card reveal">
-              <span class="expertise-icon">DC</span>
-              <h3>DCS Engineering</h3>
-              <p>Distributed control system configuration, integration, and operational support.</p>
+
+            <article class="project-card reveal">
+              <div class="project-top"><span class="project-code">SYS / 05</span><span class="project-domain">GAS PROCESSING</span></div>
+              <div class="project-graphic graphic-sensors" aria-hidden="true"><span class="sensor-bar"></span><span class="sensor-point p1"></span><span class="sensor-point p2"></span><span class="sensor-point p3"></span><span class="sensor-readout">FLOW <b>PRESSURE</b></span></div>
+              <div class="project-content"><p class="project-type">SCADA + ALARMS</p><h3>Inert Gas Generator</h3><p>Siemens WinCC screens for process monitoring and control, with gas-flow and pressure visibility, safety interlocks, alarm handling, trends, and reporting.</p><div class="tag-row"><span>WinCC</span><span>Alarm Handling</span><span>Trend Logging</span></div></div>
+              <span class="project-arrow" aria-hidden="true">↗</span>
             </article>
-            <article class="expertise-card reveal">
-              <span class="expertise-icon">MC</span>
-              <h3>Motion Control</h3>
-              <p>Drive integration, motion sequencing, and coordinated machine control.</p>
-            </article>
-            <article class="expertise-card reveal">
-              <span class="expertise-icon">II</span>
-              <h3>Industrial IoT</h3>
-              <p>Connectivity, monitoring, and data exchange across smart industrial systems.</p>
-            </article>
-            <article class="expertise-card reveal">
-              <span class="expertise-icon">FI</span>
-              <h3>Field Instrumentation</h3>
-              <p>Instrumentation support, field wiring, and system validation in live facilities.</p>
-            </article>
-            <article class="expertise-card reveal">
-              <span class="expertise-icon">CM</span>
-              <h3>System Commissioning</h3>
-              <p>Installation, testing, troubleshooting, and handover of automation systems.</p>
-            </article>
-            <article class="expertise-card reveal">
-              <span class="expertise-icon">NW</span>
-              <h3>Industrial Networking</h3>
-              <p>Industrial communication networks, protocol integration, and diagnostics.</p>
+
+            <article class="project-card reveal">
+              <div class="project-top"><span class="project-code">SYS / 06</span><span class="project-domain">MARINE · THERMAL</span></div>
+              <div class="project-graphic graphic-thermal" aria-hidden="true"><span class="thermal-line"></span><span class="thermal-pulse"></span><span class="thermal-label">TEMP CONTROL</span><span class="thermal-value">AUTO</span></div>
+              <div class="project-content"><p class="project-type">TEMPERATURE CONTROL</p><h3>Calorifier Control</h3><p>Automated hot-water control using a Schneider M221 PLC and AVEVA InTouch for operator control, alarm management, and real-time process monitoring.</p><div class="tag-row"><span>M221</span><span>AVEVA InTouch</span><span>SCADA</span></div></div>
+              <span class="project-arrow" aria-hidden="true">↗</span>
             </article>
           </div>
         </section>
 
-        <section id="experience" class="section">
+        <section id="expertise" class="section expertise-section" aria-labelledby="expertise-title">
+          <div class="section-kicker reveal"><span>04</span><i></i><span>ENGINEERING TOOLKIT</span></div>
           <div class="section-heading reveal">
-            <p class="eyebrow">Experience</p>
-            <h2>Professional background in control systems and industrial automation.</h2>
+            <div><p class="eyebrow">PLATFORMS &amp; METHODS</p><h2 id="expertise-title">From controller to <em>operator.</em></h2></div>
+            <p>A practical stack for building, integrating, and supporting automation systems.</p>
           </div>
-          <div class="timeline-experience">
-            <article class="exp-card reveal">
-              <div class="exp-header">
-                <h3>Proficient Automation and Controls Ltd.</h3>
-                <span>Project Engineer</span>
-              </div>
-              <p class="date">November 2025 – Present</p>
-              <ul class="exp-bullets">
-                <li>Working on automation projects at ISRO – SDSC SHAR.</li>
-                <li>PLC Programming.</li>
-                <li>WinCC SCADA Development.</li>
-                <li>Sequential Process Automation.</li>
-                <li>Interlocks and Safety Logic.</li>
-                <li>Fuel Casting Automation.</li>
-                <li>Bowl Cleaning Facility Automation.</li>
-                <li>Industrial System Commissioning.</li>
-              </ul>
-            </article>
-            <article class="exp-card reveal">
-              <div class="exp-header">
-                <h3>SMEC Automation Pvt Ltd.</h3>
-                <span>Automation Engineer</span>
-              </div>
-              <p class="date">October 2024 – October 2025</p>
-              <ul class="exp-bullets">
-                <li>Marine Automation.</li>
-                <li>Industrial Automation.</li>
-                <li>PLC Programming.</li>
-                <li>SCADA Development.</li>
-                <li>Field Instrumentation.</li>
-                <li>Communication Protocol Integration.</li>
-                <li>Installation, Testing and Troubleshooting.</li>
-              </ul>
-            </article>
+          <div class="toolkit-grid">
+            <article class="toolkit-card reveal"><span class="toolkit-index">01</span><div class="toolkit-icon icon-plc" aria-hidden="true"><i></i><i></i><i></i></div><h3>PLC &amp; Control</h3><p>Logic development, sequencing, interlocks, and commissioning.</p><div class="tool-list"><span>Siemens S7-1200 / 1500 / 300 / 400 / 405H / 200</span><span>Schneider M221 / M340 / M580</span><span>Allen-Bradley CompactLogix L33R</span><span>MicroLogix 1400 / 1500</span></div></article>
+            <article class="toolkit-card reveal"><span class="toolkit-index">02</span><div class="toolkit-icon icon-screen" aria-hidden="true"><i></i></div><h3>SCADA &amp; HMI</h3><p>Operator interfaces, alarms, trends, and process visibility.</p><div class="tool-list"><span>Siemens WinCC / Unified / OA</span><span>AVEVA InTouch / Edge</span><span>Plant SCADA · FactoryTalk View</span><span>Ignition · Vijeo Designer</span></div></article>
+            <article class="toolkit-card reveal"><span class="toolkit-index">03</span><div class="toolkit-icon icon-code" aria-hidden="true"><i>&lt;/&gt;</i></div><h3>Programming</h3><p>Controller languages and scripting for system customization.</p><div class="tool-list"><span>STL · SCL · LAD · FBD · SFC</span><span>Python · VBScript · C · Java</span><span>Siemens TIA Portal</span><span>SQL Server · data logging</span></div></article>
+            <article class="toolkit-card reveal"><span class="toolkit-index">04</span><div class="toolkit-icon icon-network" aria-hidden="true"><i></i><i></i><i></i><i></i></div><h3>Networks &amp; Integration</h3><p>Connecting controls, instruments, drives, and supervisory systems.</p><div class="tool-list"><span>PROFINET · PROFIBUS · Ethernet/IP</span><span>Modbus RTU / TCP · OPC UA</span><span>MQTT · HART · IEC 61850 · SNMP</span><span>Honeywell C300 DCS</span></div></article>
+          </div>
+          <div class="field-note reveal"><span class="field-note-mark">i</span><p><strong>Field engineering:</strong> VFD and servo setup, instrumentation calibration, system installation, testing, troubleshooting, operator support, and commissioning.</p><span class="field-note-index">METHOD / 04.01</span></div>
+        </section>
+
+        <section class="section credentials-section" aria-labelledby="credentials-title">
+          <div class="section-kicker reveal"><span>05</span><i></i><span>FOUNDATION</span></div>
+          <div class="credentials-layout">
+            <div class="education-card reveal">
+              <p class="eyebrow">EDUCATION</p><span class="credential-year">2020 — 2024</span>
+              <h2 id="credentials-title">B.Tech <span>Robotics &amp; Automation</span></h2>
+              <p>Kerala Technological University</p>
+              <div class="education-rule"><span></span></div>
+              <small>ENGINEERING FOUNDATION / 01</small>
+            </div>
+            <div class="certifications reveal">
+              <p class="eyebrow">CERTIFICATIONS</p>
+              <div class="certification-row"><span class="cert-number">01</span><strong>Post Graduate Diploma in Industrial Automation</strong><span class="cert-arrow">↗</span></div>
+              <div class="certification-row"><span class="cert-number">02</span><strong>Advanced Diploma in Distributed Control System · Honeywell C300</strong><span class="cert-arrow">↗</span></div>
+              <div class="certification-row"><span class="cert-number">03</span><strong>Ignition 8.1 Credential · Inductive Automation</strong><span class="cert-arrow">↗</span></div>
+              <div class="certification-row"><span class="cert-number">04</span><strong>Google IT Automation with Python · Coursera</strong><span class="cert-arrow">↗</span></div>
+            </div>
           </div>
         </section>
 
-        <section id="projects" class="section">
-          <div class="section-heading reveal">
-            <p class="eyebrow">Projects</p>
-            <h2>Selected engineering projects from industrial and aerospace automation domains.</h2>
-          </div>
-          <div class="projects-grid">
-            <article class="project-card reveal">
-              <h3>Bowl Cleaning Facility – ISRO SDSC SHAR</h3>
-              <p><strong>Description:</strong> Automation of the bowl cleaning process with sequence control and interface support.</p>
-              <p><strong>Technologies Used:</strong> PLC, SCADA, field instrumentation, sequential logic.</p>
-              <p><strong>PLC Platform:</strong> Siemens S7-1500</p>
-              <p><strong>SCADA Platform:</strong> WinCC</p>
-              <p><strong>Industrial Protocols:</strong> PROFINET, Modbus TCP</p>
-              <p><strong>My Role:</strong> PLC programming, SCADA development, and system commissioning.</p>
-            </article>
-            <article class="project-card reveal">
-              <h3>Solid Propellant Fuel Casting Facility – ISRO SDSC SHAR</h3>
-              <p><strong>Description:</strong> Control and monitoring solution for fuel casting automation with critical interlocks.</p>
-              <p><strong>Technologies Used:</strong> PLC, SCADA, safety logic, process control.</p>
-              <p><strong>PLC Platform:</strong> Siemens S7-400 / S7-405H</p>
-              <p><strong>SCADA Platform:</strong> WinCC</p>
-              <p><strong>Industrial Protocols:</strong> PROFIBUS, PROFINET</p>
-              <p><strong>My Role:</strong> Control logic development, interlocks, and commissioning support.</p>
-            </article>
-            <article class="project-card reveal">
-              <h3>Alarm Monitoring System – Hybrid Propulsion</h3>
-              <p><strong>Description:</strong> Monitoring framework for hybrid propulsion alarms and event handling.</p>
-              <p><strong>Technologies Used:</strong> PLC, SCADA, alarm management, industrial networking.</p>
-              <p><strong>PLC Platform:</strong> Schneider M340</p>
-              <p><strong>SCADA Platform:</strong> FactoryTalk View</p>
-              <p><strong>Industrial Protocols:</strong> OPC UA, Ethernet/IP</p>
-              <p><strong>My Role:</strong> System configuration, HMI integration, and protocol-based communication.</p>
-            </article>
-            <article class="project-card reveal">
-              <h3>Boiler Control System</h3>
-              <p><strong>Description:</strong> Control system for boiler operations with monitoring and protective logic.</p>
-              <p><strong>Technologies Used:</strong> PLC, SCADA, DCS integration, field instrumentation.</p>
-              <p><strong>PLC Platform:</strong> Allen Bradley</p>
-              <p><strong>SCADA Platform:</strong> Plant SCADA</p>
-              <p><strong>Industrial Protocols:</strong> Modbus RTU, HART</p>
-              <p><strong>My Role:</strong> Process logic development and commissioning support.</p>
-            </article>
-            <article class="project-card reveal">
-              <h3>Inert Gas Generator</h3>
-              <p><strong>Description:</strong> Automation solution for inert gas generation and process monitoring.</p>
-              <p><strong>Technologies Used:</strong> PLC, SCADA, control logic, field devices.</p>
-              <p><strong>PLC Platform:</strong> Siemens S7-300</p>
-              <p><strong>SCADA Platform:</strong> WinCC Unified</p>
-              <p><strong>Industrial Protocols:</strong> PROFINET, Modbus TCP</p>
-              <p><strong>My Role:</strong> Logic development, interface configuration, and troubleshooting.</p>
-            </article>
-            <article class="project-card reveal">
-              <h3>Calorifier Control System</h3>
-              <p><strong>Description:</strong> Thermal control and monitoring system for calorifier operation.</p>
-              <p><strong>Technologies Used:</strong> PLC, SCADA, motion and process control.</p>
-              <p><strong>PLC Platform:</strong> Schneider M580</p>
-              <p><strong>SCADA Platform:</strong> AVEVA InTouch</p>
-              <p><strong>Industrial Protocols:</strong> Modbus TCP, OPC UA</p>
-              <p><strong>My Role:</strong> System integration, sequence logic, and field support.</p>
-            </article>
-          </div>
-        </section>
-
-        <section id="certifications" class="section">
-          <div class="section-heading reveal">
-            <p class="eyebrow">Certifications</p>
-            <h2>Professional certifications aligned with automation and systems engineering.</h2>
-          </div>
-          <div class="cert-grid">
-            <article class="cert-card reveal">
-              <h3>Industrial Automation</h3>
-              <p>Applied control and automation systems knowledge for industrial environments.</p>
-              <a class="cert-link" href="assets/docs/Industrial_Automation_Certificate.pdf" target="_blank" rel="noopener noreferrer">View Certificate</a>
-            </article>
-            <article class="cert-card reveal">
-              <h3>Honeywell DCS</h3>
-              <p>Distributed control system exposure supporting process automation work.</p>
-              <a class="cert-link" href="assets/docs/Honeywell_DCS_Certificate.pdf" target="_blank" rel="noopener noreferrer">View Certificate</a>
-            </article>
-            <article class="cert-card reveal">
-              <h3>Ignition 8.1</h3>
-              <p>SCADA and IIoT platform expertise for industrial monitoring and control.</p>
-              <a class="cert-link" href="assets/docs/Ignition_8_1_Certificate.pdf" target="_blank" rel="noopener noreferrer">View Certificate</a>
-            </article>
-            <article class="cert-card reveal">
-              <h3>Google IT Automation with Python</h3>
-              <p>Automation-oriented scripting and systems thinking for operational efficiency.</p>
-              <a class="cert-link" href="assets/docs/Google_IT_Automation_Certificate.pdf" target="_blank" rel="noopener noreferrer">View Certificate</a>
-            </article>
-          </div>
-        </section>
-
-        <section class="section education-section">
-          <div class="edu-card reveal">
-            <p class="eyebrow">Education</p>
-            <h3>Bachelor of Technology</h3>
-            <p>Robotics and Automation Engineering</p>
-            <p>Kerala Technological University</p>
-          </div>
-        </section>
-
-        <section id="contact" class="section contact-section">
-          <div class="section-heading reveal">
-            <p class="eyebrow">Contact</p>
-            <h2>Available for automation engineering roles in industrial and aerospace environments.</h2>
-          </div>
-          <div class="contact-grid">
-            <form class="contact-form reveal">
-              <label>
-                Name
-                <input type="text" placeholder="Your name" />
-              </label>
-              <label>
-                Email
-                <input type="email" placeholder="Your email" />
-              </label>
-              <label>
-                Message
-                <textarea rows="5" placeholder="Tell me about your project"></textarea>
-              </label>
-              <button class="btn btn-primary btn-ripple" type="submit">Send Message</button>
-            </form>
-            <div class="contact-details reveal">
-              <div class="contact-item">
-                <span class="contact-label">Phone</span>
-                <span>+91 80869 62561</span>
-              </div>
-              <div class="contact-item">
-                <span class="contact-label">Email</span>
-                <span>amaljoy519@gmail.com</span>
-              </div>
-              <div class="contact-item">
-                <span class="contact-label">LinkedIn</span>
-                <span>linkedin.com/in/amaljoy</span>
-              </div>
-              <div class="contact-item">
-                <span class="contact-label">Location</span>
-                <span>Keralam, India</span>
-              </div>
-              <a class="btn btn-secondary btn-ripple" href="assets/docs/Amal_Joy_Resume.pdf" target="_blank" rel="noopener noreferrer">Download Resume</a>
+        <section id="contact" class="section contact-section" aria-labelledby="contact-title">
+          <div class="contact-panel reveal">
+            <div class="contact-grid-mark" aria-hidden="true"></div>
+            <div class="contact-content">
+              <div class="section-kicker"><span>06</span><i></i><span>CONTACT</span></div>
+              <p class="eyebrow">OPEN CHANNEL</p>
+              <h2 id="contact-title">Let's build systems <em>that work.</em></h2>
+              <p>For automation roles, project conversations, and engineering collaboration.</p>
+              <a class="button button-primary contact-button" href="mailto:amaljoy519@gmail.com?subject=Automation%20Engineering%20Enquiry"><span>Start a conversation</span><span class="button-arrow" aria-hidden="true">↗</span></a>
+            </div>
+            <div class="contact-details">
+              <a href="mailto:amaljoy519@gmail.com"><span>EMAIL</span><strong>amaljoy519@gmail.com</strong><b aria-hidden="true">↗</b></a>
+              <a href="tel:+918086962561"><span>PHONE</span><strong>+91 80869 62561</strong><b aria-hidden="true">↗</b></a>
+              <a href="https://www.linkedin.com/in/amal-joy-9622a4202" target="_blank" rel="noopener noreferrer"><span>LINKEDIN</span><strong>amal-joy-9622a4202</strong><b aria-hidden="true">↗</b></a>
+              <div class="contact-location"><span>LOCATION</span><strong>Ernakulam, Kerala, India</strong></div>
             </div>
           </div>
         </section>
       </main>
 
       <footer class="site-footer">
-        <div>
-          <h3>AMAL JOY</h3>
-          <p>Robotics & Automation Engineer</p>
-        </div>
-        <p>Engineering Intelligent Industrial Automation</p>
+        <a class="footer-brand" href="#home"><span class="brand-mark small-mark" aria-hidden="true"><span>AJ</span><i></i></span><span>AMAL JOY</span></a>
+        <p>CONTROL <i>·</i> AUTOMATION <i>·</i> RELIABILITY</p>
+        <a class="back-top" href="#home">BACK TO TOP <span aria-hidden="true">↑</span></a>
       </footer>
     </div>
 
