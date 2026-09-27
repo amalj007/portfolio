@@ -368,6 +368,11 @@ export function Portfolio() {
             <p className="hero-summary hero-intro">
               I build the logic behind what moves — engineering automation for marine vessels, aerospace facilities, and industrial processes.
             </p>
+            <p className="hero-current hero-intro">
+              <span className="hero-current-pulse" aria-hidden="true" />
+              <span>Currently</span>
+              <strong>Automation Engineer · Master Systems LLC</strong>
+            </p>
             <div className="hero-actions hero-intro">
               <MagneticLink className="button button-primary" href={resumeUrl} download="Amal_Joy_Resume.pdf">
                 <span>Download resume</span>
