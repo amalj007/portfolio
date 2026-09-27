@@ -134,6 +134,57 @@ export function SiteHeader() {
     };
   }, []);
 
+  useEffect(() => {
+    const surfaces = [
+      ".site-header", ".site-nav", ".glass-card", ".skill-card", ".stack-card",
+      ".project-card", ".message-form", ".message-field", ".timeline-item",
+      ".button", ".nav-resume", ".certification-row", ".field-note", ".brand-mark",
+    ].join(",");
+    let frame = 0;
+    let previous: HTMLElement | null = null;
+    let pending: HTMLElement | null = null;
+    let pointerX = 0;
+    let pointerY = 0;
+
+    const reset = (element: HTMLElement) => {
+      element.style.setProperty("--glass-x", "82%");
+      element.style.setProperty("--glass-y", "0%");
+    };
+    const onPointerMove = (event: PointerEvent) => {
+      if (event.pointerType === "touch") return;
+      const target = event.target;
+      const surface = target instanceof Element ? target.closest<HTMLElement>(surfaces) : null;
+      if (previous && previous !== surface) reset(previous);
+      previous = surface;
+      if (!surface) return;
+
+      const bounds = surface.getBoundingClientRect();
+      pending = surface;
+      pointerX = ((event.clientX - bounds.left) / bounds.width) * 100;
+      pointerY = ((event.clientY - bounds.top) / bounds.height) * 100;
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        if (!pending) return;
+        pending.style.setProperty("--glass-x", pointerX.toFixed(1) + "%");
+        pending.style.setProperty("--glass-y", pointerY.toFixed(1) + "%");
+      });
+    };
+    const onPointerLeave = () => {
+      if (previous) reset(previous);
+      previous = null;
+      pending = null;
+    };
+
+    document.addEventListener("pointermove", onPointerMove, { passive: true });
+    window.addEventListener("blur", onPointerLeave);
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      document.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("blur", onPointerLeave);
+    };
+  }, []);
+
   return (
     <header
       className={"site-header" + (menuOpen ? " menu-open" : "") + (scrolled ? " is-scrolled" : "")}
