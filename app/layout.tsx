@@ -5,6 +5,7 @@ import { SmoothScroll } from "@/components/smooth-scroll";
 import { ScrollDirector } from "@/components/scroll-director";
 import "./globals.css";
 import "./portfolio-effects.css";
+import "./liquid-glass.css";
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL || "https://amalj007.github.io/portfolio/";
