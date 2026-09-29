@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
 import type { PointerEvent as ReactPointerEvent, ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 
@@ -33,32 +33,66 @@ export function MagneticLink({
   children,
   ...props
 }: MagneticLinkProps) {
+  const reducedMotion = useReducedMotion();
+  const bounds = useRef<DOMRect | null>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const springX = useSpring(x, { stiffness: 260, damping: 18, mass: 0.45 });
   const springY = useSpring(y, { stiffness: 260, damping: 18, mass: 0.45 });
 
   function move(event: ReactPointerEvent<HTMLAnchorElement>) {
-    if (event.pointerType === "touch") return;
-    const rect = event.currentTarget.getBoundingClientRect();
+    if (event.pointerType === "touch" || reducedMotion) return;
+    const rect = bounds.current || event.currentTarget.getBoundingClientRect();
+    bounds.current = rect;
     x.set((event.clientX - rect.left - rect.width / 2) * magnet);
     y.set((event.clientY - rect.top - rect.height / 2) * magnet);
   }
 
-  function reset(event: ReactPointerEvent<HTMLAnchorElement>) {
+  function reset() {
+    bounds.current = null;
     x.set(0);
     y.set(0);
   }
+
+  useEffect(() => {
+    const invalidateBounds = () => {
+      bounds.current = null;
+      x.set(0);
+      y.set(0);
+    };
+    // Nested scroll regions can move a link without another pointer-enter event.
+    window.addEventListener("scroll", invalidateBounds, { capture: true, passive: true });
+    window.addEventListener("resize", invalidateBounds, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", invalidateBounds, true);
+      window.removeEventListener("resize", invalidateBounds);
+    };
+  }, [x, y]);
+
+  useEffect(() => {
+    if (reducedMotion) {
+      bounds.current = null;
+      x.set(0);
+      y.set(0);
+    }
+  }, [reducedMotion, x, y]);
 
   return (
     <motion.a
       href={href}
       className={className}
-      style={{ x: springX, y: springY }}
+      style={{ x: reducedMotion ? 0 : springX, y: reducedMotion ? 0 : springY }}
+      onPointerEnter={(event) => {
+        if (!reducedMotion && event.pointerType !== "touch") {
+          bounds.current = event.currentTarget.getBoundingClientRect();
+        }
+      }}
       onPointerMove={move}
       onPointerLeave={reset}
-      whileHover={{ scale: 1.025 }}
-      whileTap={{ scale: 0.985 }}
+      onPointerCancel={reset}
+      onBlur={reset}
+      whileHover={reducedMotion ? undefined : { scale: 1.025 }}
+      whileTap={reducedMotion ? undefined : { scale: 0.975 }}
       {...props}
     >
       {children}
@@ -67,40 +101,50 @@ export function MagneticLink({
 }
 
 export function SiteHeader() {
+  const header = useRef<HTMLElement>(null);
+  const toggle = useRef<HTMLButtonElement>(null);
+  const reducedMotion = useReducedMotion();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [scrolled, setScrolled] = useState(false);
 
-  function moveGlassReflection(event: ReactPointerEvent<HTMLElement>) {
-    if (event.pointerType === "touch") return;
-    const bounds = event.currentTarget.getBoundingClientRect();
-    const x = ((event.clientX - bounds.left) / bounds.width) * 100;
-    const y = ((event.clientY - bounds.top) / bounds.height) * 100;
-    event.currentTarget.style.setProperty("--glass-x", x.toFixed(1) + "%");
-    event.currentTarget.style.setProperty("--glass-y", y.toFixed(1) + "%");
-  }
-
-  function resetGlassReflection(event: ReactPointerEvent<HTMLElement>) {
-    event.currentTarget.style.setProperty("--glass-x", "82%");
-    event.currentTarget.style.setProperty("--glass-y", "0%");
-  }
+  useEffect(() => {
+    const mobile = window.matchMedia("(max-width: 959px)");
+    const updateViewport = () => {
+      if (mobile.matches && header.current?.querySelector("nav")?.contains(document.activeElement)) {
+        toggle.current?.focus({ preventScroll: true });
+      }
+      setIsMobile(mobile.matches);
+      setMenuOpen(false);
+    };
+    updateViewport();
+    mobile.addEventListener("change", updateViewport);
+    return () => mobile.removeEventListener("change", updateViewport);
+  }, []);
 
   useEffect(() => {
-    const closeMenu = () => setMenuOpen(false);
+    if (!menuOpen) return;
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") closeMenu();
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+        toggle.current?.focus();
+      }
+    };
+    const closeOutside = (event: Event) => {
+      if (event.target instanceof Node && !header.current?.contains(event.target)) {
+        setMenuOpen(false);
+      }
     };
     document.addEventListener("keydown", onKeyDown);
-    document.querySelectorAll("#site-nav a").forEach((link) => {
-      link.addEventListener("click", closeMenu);
-    });
+    document.addEventListener("pointerdown", closeOutside);
+    document.addEventListener("focusin", closeOutside);
     return () => {
       document.removeEventListener("keydown", onKeyDown);
-      document.querySelectorAll("#site-nav a").forEach((link) => {
-        link.removeEventListener("click", closeMenu);
-      });
+      document.removeEventListener("pointerdown", closeOutside);
+      document.removeEventListener("focusin", closeOutside);
     };
-  }, []);
+  }, [menuOpen]);
 
   useEffect(() => {
     const sections = ["#home", ...links.map(([, href]) => href)]
@@ -135,10 +179,12 @@ export function SiteHeader() {
   }, []);
 
   useEffect(() => {
+    if (reducedMotion || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
     const surfaces = [
-      ".site-header", ".site-nav", ".glass-card", ".skill-card", ".stack-card",
+      ".site-header", ".glass-card", ".skill-card", ".stack-card",
       ".project-card", ".message-form", ".message-field", ".timeline-item",
       ".button", ".nav-resume", ".certification-row", ".field-note", ".brand-mark",
+      ".education-card", ".contact-panel", "[data-glass-reflection]",
     ].join(",");
     let frame = 0;
     let previous: HTMLElement | null = null;
@@ -150,48 +196,52 @@ export function SiteHeader() {
       element.style.setProperty("--glass-x", "82%");
       element.style.setProperty("--glass-y", "0%");
     };
+    const update = () => {
+      frame = 0;
+      // Read only the latest surface once per frame, before writing any styles.
+      const surface = pending;
+      const bounds = surface?.getBoundingClientRect();
+      if (previous && previous !== surface) reset(previous);
+      previous = surface;
+      if (!surface || !bounds || !bounds.width || !bounds.height) return;
+      const x = Math.max(0, Math.min(100, ((pointerX - bounds.left) / bounds.width) * 100));
+      const y = Math.max(0, Math.min(100, ((pointerY - bounds.top) / bounds.height) * 100));
+      surface.style.setProperty("--glass-x", x.toFixed(1) + "%");
+      surface.style.setProperty("--glass-y", y.toFixed(1) + "%");
+    };
     const onPointerMove = (event: PointerEvent) => {
       if (event.pointerType === "touch") return;
       const target = event.target;
-      const surface = target instanceof Element ? target.closest<HTMLElement>(surfaces) : null;
-      if (previous && previous !== surface) reset(previous);
-      previous = surface;
-      if (!surface) return;
-
-      const bounds = surface.getBoundingClientRect();
-      pending = surface;
-      pointerX = ((event.clientX - bounds.left) / bounds.width) * 100;
-      pointerY = ((event.clientY - bounds.top) / bounds.height) * 100;
-      if (frame) return;
-      frame = window.requestAnimationFrame(() => {
-        frame = 0;
-        if (!pending) return;
-        pending.style.setProperty("--glass-x", pointerX.toFixed(1) + "%");
-        pending.style.setProperty("--glass-y", pointerY.toFixed(1) + "%");
-      });
+      pending = target instanceof Element ? target.closest<HTMLElement>(surfaces) : null;
+      pointerX = event.clientX;
+      pointerY = event.clientY;
+      if (!frame) frame = window.requestAnimationFrame(update);
     };
     const onPointerLeave = () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      frame = 0;
       if (previous) reset(previous);
       previous = null;
       pending = null;
     };
 
     document.addEventListener("pointermove", onPointerMove, { passive: true });
+    document.documentElement.addEventListener("pointerleave", onPointerLeave);
     window.addEventListener("blur", onPointerLeave);
     return () => {
-      if (frame) window.cancelAnimationFrame(frame);
+      onPointerLeave();
       document.removeEventListener("pointermove", onPointerMove);
+      document.documentElement.removeEventListener("pointerleave", onPointerLeave);
       window.removeEventListener("blur", onPointerLeave);
     };
-  }, []);
+  }, [reducedMotion]);
 
   return (
     <header
+      ref={header}
       className={"site-header" + (menuOpen ? " menu-open" : "") + (scrolled ? " is-scrolled" : "")}
-      onPointerMove={moveGlassReflection}
-      onPointerLeave={resetGlassReflection}
     >
-      <a className="brand" href="#home" aria-label="Amal Joy, home">
+      <a className="brand" href="#home" aria-label="Amal Joy, home" onClick={() => setMenuOpen(false)}>
         <span className="brand-mark" aria-hidden="true">
           <span>AJ</span>
           <i />
@@ -203,6 +253,7 @@ export function SiteHeader() {
       </a>
 
       <button
+        ref={toggle}
         className="nav-toggle"
         type="button"
         aria-label={menuOpen ? "Close navigation" : "Open navigation"}
@@ -214,10 +265,43 @@ export function SiteHeader() {
         <span />
       </button>
 
-      <nav id="site-nav" className="site-nav glass-panel" aria-label="Main navigation">
+      <nav
+        id="site-nav"
+        className="site-nav"
+        aria-label="Main navigation"
+        aria-hidden={isMobile && !menuOpen ? true : undefined}
+        inert={isMobile && !menuOpen}
+        onClick={(event) => {
+          const anchor = event.target instanceof Element ? event.target.closest("a") : null;
+          if (!anchor) return;
+          if (isMobile && menuOpen) {
+            const href = anchor.getAttribute("href");
+            const destination = href?.startsWith("#") ? document.getElementById(href.slice(1)) : null;
+            const focusTarget = destination?.querySelector<HTMLElement>("h1, h2") || destination;
+            if (focusTarget) {
+              if (!focusTarget.hasAttribute("tabindex")) {
+                focusTarget.setAttribute("tabindex", "-1");
+                focusTarget.addEventListener("blur", () => focusTarget.removeAttribute("tabindex"), { once: true });
+              }
+              focusTarget.focus({ preventScroll: true });
+            } else {
+              toggle.current?.focus({ preventScroll: true });
+            }
+          }
+          setMenuOpen(false);
+        }}
+      >
         {links.map(([label, href]) => (
           <a href={href} key={href} aria-current={activeSection === href.slice(1) ? "location" : undefined}>
-            {label}
+            {activeSection === href.slice(1) && (
+              <motion.span
+                className="nav-active-surface"
+                layoutId={reducedMotion ? undefined : "navigation-glass"}
+                transition={{ type: "spring", stiffness: 280, damping: 30 }}
+                aria-hidden="true"
+              />
+            )}
+            <span className="nav-label">{label}</span>
           </a>
         ))}
         <MagneticLink
@@ -276,12 +360,12 @@ export function ScrollProgress() {
 
 export function Cursor() {
   const cursor = useRef<HTMLDivElement>(null);
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
     const element = cursor.current;
     const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (!element || !finePointer.matches || reducedMotion.matches) return;
+    if (!element || !finePointer.matches || reducedMotion) return;
 
     let frame = 0;
     let clientX = -80;
@@ -311,20 +395,25 @@ export function Cursor() {
         element.classList.toggle("is-active", active);
       }
     };
-    const onLeave = () => element.classList.remove("is-visible");
+    const onLeave = () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      frame = 0;
+      active = false;
+      element.classList.remove("is-visible", "is-active");
+    };
 
     window.addEventListener("pointermove", onMove, { passive: true });
     document.addEventListener("pointerover", onOver);
-    document.addEventListener("pointerout", onOver);
+    document.documentElement.addEventListener("pointerleave", onLeave);
     window.addEventListener("blur", onLeave);
     return () => {
-      if (frame) window.cancelAnimationFrame(frame);
+      onLeave();
       window.removeEventListener("pointermove", onMove);
       document.removeEventListener("pointerover", onOver);
-      document.removeEventListener("pointerout", onOver);
+      document.documentElement.removeEventListener("pointerleave", onLeave);
       window.removeEventListener("blur", onLeave);
     };
-  }, []);
+  }, [reducedMotion]);
 
   return (
     <div className="custom-cursor" aria-hidden="true" ref={cursor}>
@@ -332,4 +421,3 @@ export function Cursor() {
     </div>
   );
 }
-

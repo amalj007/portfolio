@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
 import type { PointerEvent as ReactPointerEvent, ReactNode } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { MotionStyle } from "framer-motion";
 
 type ProjectCardProps = {
@@ -13,13 +13,16 @@ type ProjectCardProps = {
 
 export function ProjectCard({ id, systemNote, children }: ProjectCardProps) {
   const [expanded, setExpanded] = useState(false);
+  const [scrollable, setScrollable] = useState(false);
+  const card = useRef<HTMLElement>(null);
+  const mounted = useRef(false);
   const reduceMotion = useReducedMotion();
   const tiltX = useSpring(useMotionValue(0), { stiffness: 170, damping: 22, mass: 0.55 });
   const tiltY = useSpring(useMotionValue(0), { stiffness: 170, damping: 22, mass: 0.55 });
   const detailId = "project-details-" + id;
   const style = {
-    rotateX: tiltX,
-    rotateY: tiltY,
+    rotateX: reduceMotion ? 0 : tiltX,
+    rotateY: reduceMotion ? 0 : tiltY,
     transformPerspective: 1100,
     "--spot-x": "50%",
     "--spot-y": "50%",
@@ -36,31 +39,55 @@ export function ProjectCard({ id, systemNote, children }: ProjectCardProps) {
     event.currentTarget.style.setProperty("--spot-y", (y * 100).toFixed(1) + "%");
   }
 
-  function resetTilt(event: ReactPointerEvent<HTMLElement>) {
+  function resetTilt() {
     tiltX.set(0);
     tiltY.set(0);
-    event.currentTarget.style.setProperty("--spot-x", "50%");
-    event.currentTarget.style.setProperty("--spot-y", "50%");
+    card.current?.style.setProperty("--spot-x", "50%");
+    card.current?.style.setProperty("--spot-y", "50%");
+  }
+
+  function refreshLayout() {
+    void import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => {
+      if (mounted.current) ScrollTrigger.refresh();
+    });
   }
 
   useEffect(() => {
-    if (!expanded) return;
-    let cancelled = false;
-    void import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => {
-      if (!cancelled) ScrollTrigger.refresh();
-    });
+    mounted.current = true;
     return () => {
-      cancelled = true;
+      mounted.current = false;
     };
+  }, []);
+
+  useEffect(() => {
+    if (reduceMotion) {
+      tiltX.set(0);
+      tiltY.set(0);
+    }
+  }, [reduceMotion, tiltX, tiltY]);
+
+  useEffect(() => {
+    const element = card.current;
+    if (!element) return;
+    const updateOverflow = () => setScrollable(element.scrollHeight > element.clientHeight + 1);
+    // Observe the contents too: an expanded note can grow inside a capped card.
+    const observer = new ResizeObserver(updateOverflow);
+    observer.observe(element);
+    Array.from(element.children).forEach((child) => observer.observe(child));
+    updateOverflow();
+    return () => observer.disconnect();
   }, [expanded]);
 
   return (
     <motion.article
+      ref={card}
       className="project-card glass-card"
       data-reveal
+      data-lenis-prevent-wheel={scrollable ? "" : undefined}
       style={style}
       onPointerMove={handlePointerMove}
       onPointerLeave={resetTilt}
+      onPointerCancel={resetTilt}
       whileHover={reduceMotion ? undefined : { y: -7 }}
       transition={{ type: "spring", stiffness: 180, damping: 21 }}
     >
@@ -75,7 +102,7 @@ export function ProjectCard({ id, systemNote, children }: ProjectCardProps) {
         <span>{expanded ? "CLOSE SYSTEM NOTES" : "EXPLORE SYSTEM"}</span>
         <span aria-hidden="true">{expanded ? "−" : "+"}</span>
       </button>
-      <AnimatePresence initial={false}>
+      <AnimatePresence initial={false} onExitComplete={refreshLayout}>
         {expanded && (
           <motion.div
             id={detailId}
@@ -84,6 +111,7 @@ export function ProjectCard({ id, systemNote, children }: ProjectCardProps) {
             animate={{ height: "auto", opacity: 1, y: 0 }}
             exit={{ height: 0, opacity: 0, y: 6 }}
             transition={{ duration: reduceMotion ? 0 : 0.42, ease: [0.22, 1, 0.36, 1] }}
+            onAnimationComplete={refreshLayout}
           >
             <span className="mono-label">SYSTEM VIEW / {id}</span>
             <p>{systemNote}</p>
@@ -93,4 +121,3 @@ export function ProjectCard({ id, systemNote, children }: ProjectCardProps) {
     </motion.article>
   );
 }
-

@@ -513,7 +513,7 @@ export function Portfolio() {
             </div>
           </div>
           <div className="work-stage">
-            <div className="project-track">
+            <div className="project-track" tabIndex={0} role="region" aria-label="Featured engineering projects. Use arrow keys or scroll to explore.">
               {projects.map((project) => (
                 <ProjectCard key={project.id} id={project.id} systemNote={project.data}>
                   <div className="project-topline">
@@ -639,4 +639,3 @@ export function Portfolio() {
     </>
   );
 }
-
