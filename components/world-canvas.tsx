@@ -158,15 +158,16 @@ function OpticalBackdrop() {
   return (
     <group position={[0, 0, -2.8]} rotation={[0, 0.12, -0.08]}>
       <mesh position={[0, 0, -0.2]}>
-        <planeGeometry args={[13, 12]} />
+        <planeGeometry args={[80, 60]} />
         <shaderMaterial
           depthWrite={false}
           vertexShader={`varying vec2 vUv;
             void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`}
           fragmentShader={`varying vec2 vUv;
             void main() {
-              float halo = exp(-length((vUv - vec2(0.56, 0.54)) * vec2(4.4, 3.8)) * 2.4);
-              float violet = exp(-length((vUv - vec2(0.36, 0.31)) * 5.0) * 3.0);
+              vec2 uv = (vUv - 0.5) * vec2(80.0 / 13.0, 60.0 / 12.0) + 0.5;
+              float halo = exp(-length((uv - vec2(0.56, 0.54)) * vec2(4.4, 3.8)) * 2.4);
+              float violet = exp(-length((uv - vec2(0.36, 0.31)) * 5.0) * 3.0);
               vec3 base = vec3(0.00152, 0.00243, 0.00439);
               gl_FragColor = vec4(base + vec3(0.012, 0.048, 0.085) * halo + vec3(0.021, 0.013, 0.056) * violet, 1.0);
               #include <tonemapping_fragment>
