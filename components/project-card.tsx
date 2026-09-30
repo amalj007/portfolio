@@ -1,9 +1,8 @@
 "use client";
 
-import { AnimatePresence, motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import type { PointerEvent as ReactPointerEvent, ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
-import type { MotionStyle } from "framer-motion";
 
 type ProjectCardProps = {
   id: string;
@@ -17,31 +16,18 @@ export function ProjectCard({ id, systemNote, children }: ProjectCardProps) {
   const card = useRef<HTMLElement>(null);
   const mounted = useRef(false);
   const reduceMotion = useReducedMotion();
-  const tiltX = useSpring(useMotionValue(0), { stiffness: 170, damping: 22, mass: 0.55 });
-  const tiltY = useSpring(useMotionValue(0), { stiffness: 170, damping: 22, mass: 0.55 });
   const detailId = "project-details-" + id;
-  const style = {
-    rotateX: reduceMotion ? 0 : tiltX,
-    rotateY: reduceMotion ? 0 : tiltY,
-    transformPerspective: 1100,
-    "--spot-x": "50%",
-    "--spot-y": "50%",
-  } as MotionStyle;
 
   function handlePointerMove(event: ReactPointerEvent<HTMLElement>) {
     if (reduceMotion || event.pointerType === "touch") return;
     const bounds = event.currentTarget.getBoundingClientRect();
     const x = (event.clientX - bounds.left) / bounds.width;
     const y = (event.clientY - bounds.top) / bounds.height;
-    tiltY.set((x - 0.5) * 5.5);
-    tiltX.set((0.5 - y) * 4.5);
     event.currentTarget.style.setProperty("--spot-x", (x * 100).toFixed(1) + "%");
     event.currentTarget.style.setProperty("--spot-y", (y * 100).toFixed(1) + "%");
   }
 
-  function resetTilt() {
-    tiltX.set(0);
-    tiltY.set(0);
+  function resetLight() {
     card.current?.style.setProperty("--spot-x", "50%");
     card.current?.style.setProperty("--spot-y", "50%");
   }
@@ -58,13 +44,6 @@ export function ProjectCard({ id, systemNote, children }: ProjectCardProps) {
       mounted.current = false;
     };
   }, []);
-
-  useEffect(() => {
-    if (reduceMotion) {
-      tiltX.set(0);
-      tiltY.set(0);
-    }
-  }, [reduceMotion, tiltX, tiltY]);
 
   useEffect(() => {
     const element = card.current;
@@ -84,10 +63,10 @@ export function ProjectCard({ id, systemNote, children }: ProjectCardProps) {
       className="project-card glass-card"
       data-reveal
       data-lenis-prevent-wheel={scrollable ? "" : undefined}
-      style={style}
+      style={{ "--spot-x": "50%", "--spot-y": "50%" } as React.CSSProperties}
       onPointerMove={handlePointerMove}
-      onPointerLeave={resetTilt}
-      onPointerCancel={resetTilt}
+      onPointerLeave={resetLight}
+      onPointerCancel={resetLight}
       whileHover={reduceMotion ? undefined : { y: -7 }}
       transition={{ type: "spring", stiffness: 180, damping: 21 }}
     >
@@ -121,3 +100,4 @@ export function ProjectCard({ id, systemNote, children }: ProjectCardProps) {
     </motion.article>
   );
 }
+

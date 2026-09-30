@@ -1,59 +1,96 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import { Component } from "react";
-import type { ReactNode } from "react";
+import { useEffect, useRef } from "react";
 
-function GlassFallback() {
-  return (
-    <svg
-      viewBox="0 0 600 700"
-      fill="none"
-      aria-hidden="true"
-      style={{ position: "absolute", width: "min(72vw, 760px)", height: "80%", right: "max(-8vw, -50px)", top: "10%", opacity: 0.7 }}
-    >
-      <defs>
-        <linearGradient id="glass-fallback-material" x1="150" y1="130" x2="460" y2="590" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#e6f7ff" stopOpacity="0.85" />
-          <stop offset="0.22" stopColor="#8eceee" stopOpacity="0.13" />
-          <stop offset="0.52" stopColor="#9a9ede" stopOpacity="0.22" />
-          <stop offset="0.73" stopColor="#c6edff" stopOpacity="0.55" />
-          <stop offset="1" stopColor="#649ec2" stopOpacity="0.12" />
-        </linearGradient>
-        <linearGradient id="glass-fallback-edge" x1="150" y1="160" x2="450" y2="560" gradientUnits="userSpaceOnUse">
-          <stop stopColor="white" stopOpacity="0.9" />
-          <stop offset="0.34" stopColor="#c1e4ff" stopOpacity="0.06" />
-          <stop offset="0.77" stopColor="#b6c9ff" stopOpacity="0.55" />
-          <stop offset="1" stopColor="#c1e4ff" stopOpacity="0.06" />
-        </linearGradient>
-      </defs>
-      <g transform="rotate(-20 300 350)">
-        <path d="M300 139C405 125 451 231 451 355C451 467 393 559 290 561C188 563 148 461 154 347C160 234 204 152 300 139Z" stroke="url(#glass-fallback-material)" strokeWidth="78" />
-        <path d="M300 100C431 84 490 220 490 355C490 486 419 598 289 600C162 602 108 479 115 345C122 214 180 117 300 100Z" stroke="url(#glass-fallback-edge)" strokeWidth="2" />
-        <path d="M300 178C377 166 412 246 412 355C412 449 370 520 291 522C215 524 188 441 193 349C199 256 228 190 300 178Z" stroke="url(#glass-fallback-edge)" strokeWidth="2" />
-      </g>
-    </svg>
-  );
-}
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
-class SceneBoundary extends Component<{ children: ReactNode }, { unavailable: boolean }> {
-  state = { unavailable: false };
-  static getDerivedStateFromError() { return { unavailable: true }; }
-  render() { return this.state.unavailable ? <GlassFallback /> : this.props.children; }
-}
+const photographs = [
+  { chapter: "home", file: "hero-robotics-real.webp", label: "Industrial robot working in a laboratory" },
+  { chapter: "about", file: "ship-bridge-real.webp", label: "Navigation bridge of a commercial vessel" },
+  { chapter: "skills", file: "control-cabinet-real.webp", label: "Installed industrial PLC control cabinet" },
+  { chapter: "experience", file: "engine-control-real.webp", label: "Engine control room aboard a vessel" },
+] as const;
 
-const WorldCanvas = dynamic(
-  () => import("@/components/world-canvas").then((module) => module.WorldCanvas),
-  {
-    ssr: false,
-    loading: GlassFallback,
-  },
-);
+const clamp = (value: number) => Math.max(0, Math.min(1, value));
+const smooth = (value: number) => {
+  const t = clamp(value);
+  return t * t * (3 - 2 * t);
+};
 
+/** A continuous, photographic backdrop with restrained, two-dimensional movement. */
 export function SceneLayer() {
-  return (
-    <div className="scene-layer" aria-hidden="true">
-      <SceneBoundary><WorldCanvas fallback={<GlassFallback />} /></SceneBoundary>
-    </div>
-  );
+  const layers = useRef<Array<HTMLDivElement | null>>([]);
+
+  useEffect(() => {
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let frame = 0;
+    let pointer = 0;
+
+    const render = () => {
+      const viewport = window.innerHeight;
+      const scroll = window.scrollY;
+      const offsets = photographs.map(({ chapter }) => {
+        const section = document.getElementById(chapter);
+        return section ? section.getBoundingClientRect().top + scroll : 0;
+      });
+      const fades = offsets.slice(1).map((offset) =>
+        smooth((scroll - (offset - viewport * 0.68)) / Math.max(1, viewport * 0.38)),
+      );
+
+      layers.current.forEach((layer, index) => {
+        if (!layer) return;
+        const entered = index === 0 ? 1 : fades[index - 1];
+        const leaving = index === photographs.length - 1 ? 0 : fades[index];
+        layer.style.opacity = String(entered * (1 - leaving));
+        if (!motion.matches) {
+          const chapterLength = Math.max(1, (offsets[index + 1] ?? offsets[index] + viewport * 1.8) - offsets[index]);
+          const travel = clamp((scroll - offsets[index]) / chapterLength);
+          layer.style.setProperty("--photo-y", `${((travel - 0.5) * 30).toFixed(1)}px`);
+          layer.style.setProperty("--photo-x", `${(pointer * (index % 2 ? -7 : 7)).toFixed(1)}px`);
+        }
+      });
+      frame = 0;
+    };
+
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(render); };
+    const onPointer = (event: PointerEvent) => {
+      if (event.pointerType === "touch" || motion.matches) return;
+      pointer = event.clientX / window.innerWidth * 2 - 1;
+      schedule();
+    };
+
+    render();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule, { passive: true });
+    window.addEventListener("pointermove", onPointer, { passive: true });
+    motion.addEventListener("change", schedule);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      window.removeEventListener("pointermove", onPointer);
+      motion.removeEventListener("change", schedule);
+    };
+  }, []);
+
+  return <div className="scene-layer photographic-scene" aria-hidden="true">
+    {photographs.map(({ chapter, file, label }, index) => <div
+      className={`photo-stage photo-stage-${chapter}`}
+      key={chapter}
+      ref={(element) => { layers.current[index] = element; }}
+      style={{ opacity: index === 0 ? 1 : 0 }}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={`${basePath}/assets/images/${file}`}
+        alt={label}
+        loading={index === 0 ? "eager" : "lazy"}
+        fetchPriority={index === 0 ? "high" : "auto"}
+        decoding="async"
+      />
+    </div>)}
+    <div className="photo-vignette" />
+    <div className="photo-grain" />
+  </div>;
 }
+
