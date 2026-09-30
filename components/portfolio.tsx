@@ -337,7 +337,7 @@ export function Portfolio() {
             </div>
             <div className="hero-hud hero-hud-bottom">
               <span>CONTROL → PROCESS → PEOPLE</span>
-              <span>ILLUSTRATIVE 3D / NOT LIVE DATA</span>
+              <span>REAL PHOTOGRAPHY / REPRESENTATIVE SCENE</span>
             </div>
           </div>
           <div className="hero-content page-gutter">
@@ -639,3 +639,4 @@ export function Portfolio() {
     </>
   );
 }
+
