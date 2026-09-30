@@ -6,6 +6,7 @@ import type { ReactNode } from "react";
 import * as THREE from "three";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
+import { ControlCabinet, ShipBridge } from "@/components/engineering-worlds";
 
 const CHAPTERS = ["home", "about", "skills", "experience", "projects", "stack", "certifications", "contact"];
 const ICE = "#d9eaff";
@@ -429,6 +430,8 @@ function SceneDirector({ compact, reducedMotion }: { compact: boolean; reducedMo
   const lens = useRef<THREE.Group>(null);
   const controls = useRef<THREE.Group>(null);
   const marine = useRef<THREE.Group>(null);
+  const cabin = useRef<THREE.Group>(null);
+  const cabinet = useRef<THREE.Group>(null);
   const artifacts = useRef<THREE.Group>(null);
   const stage = useRef(0);
   const pointer = useRef({ x: 0, y: 0 });
@@ -490,8 +493,12 @@ function SceneDirector({ compact, reducedMotion }: { compact: boolean; reducedMo
   useFrame(({ clock }, rawDelta) => {
     const delta = Math.min(rawDelta, 0.05);
     const time = reducedMotion ? 0 : clock.elapsedTime;
-    const scroll = reducedMotion ? 0 : stage.current;
+    const scroll = stage.current;
     const marinePhase = THREE.MathUtils.smoothstep(scroll, 0.65, 1.65);
+    const heroPhase = 1 - THREE.MathUtils.smoothstep(scroll, 0.25, 0.65);
+    const cabinPhase = THREE.MathUtils.smoothstep(scroll, 0.35, 0.82) * (1 - THREE.MathUtils.smoothstep(scroll, 1.48, 1.98));
+    const cabinetPhase = THREE.MathUtils.smoothstep(scroll, 1.4, 1.85) * (1 - THREE.MathUtils.smoothstep(scroll, 2.42, 2.94));
+    const enginePhase = THREE.MathUtils.smoothstep(scroll, 2.48, 2.92) * (1 - THREE.MathUtils.smoothstep(scroll, 3.52, 4.24));
     const systemsPhase = THREE.MathUtils.smoothstep(scroll, 2.05, 3.25);
     const closingPhase = THREE.MathUtils.smoothstep(scroll, 6.1, 7);
     const lerp = THREE.MathUtils.lerp;
@@ -518,24 +525,42 @@ function SceneDirector({ compact, reducedMotion }: { compact: boolean; reducedMo
     camera.lookAt(0, 0, 0);
 
     if (lens.current) {
+      lens.current.visible = heroPhase > 0.02;
       lens.current.rotation.y = damp(lens.current.rotation.y, -0.06 + Math.sin(time * 0.14) * 0.14 + marinePhase * 0.46 + systemsPhase * 0.28);
       lens.current.rotation.z = damp(lens.current.rotation.z, Math.sin(time * 0.11) * 0.085 + marinePhase * -0.18 + closingPhase * 0.22);
-      lens.current.position.z = damp(lens.current.position.z, -marinePhase * 1.9 + closingPhase * 0.9);
-      lens.current.scale.setScalar(damp(lens.current.scale.x, 1 + marinePhase * 0.29 - closingPhase * 0.13));
+      lens.current.position.z = damp(lens.current.position.z, (1 - heroPhase) * -2.3);
+      lens.current.scale.setScalar(damp(lens.current.scale.x, Math.max(0.001, heroPhase)));
     }
     if (controls.current) {
-      controls.current.scale.setScalar(damp(controls.current.scale.x, lerp(0.83, 0.43, marinePhase) + closingPhase * 0.32));
-      controls.current.position.y = damp(controls.current.position.y, 0.02 + marinePhase * 1.85 - closingPhase * 1.65);
+      controls.current.visible = heroPhase > 0.02;
+      controls.current.scale.setScalar(damp(controls.current.scale.x, Math.max(0.001, 0.83 * heroPhase)));
+      controls.current.position.y = damp(controls.current.position.y, 0.02 + (1 - heroPhase) * 0.65);
       controls.current.position.z = damp(controls.current.position.z, 0.1 + Math.sin(time * 0.2) * 0.045);
       controls.current.rotation.y = damp(controls.current.rotation.y, Math.sin(time * 0.15) * 0.1 + scroll * 0.095);
     }
     if (marine.current) {
-      const scale = 0.001 + marinePhase * (0.81 - systemsPhase * 0.16) * (1 - closingPhase * 0.97);
+      const scale = 0.001 + enginePhase * 0.78;
       marine.current.visible = scale > 0.02;
       marine.current.scale.setScalar(damp(marine.current.scale.x, scale));
       marine.current.position.y = damp(marine.current.position.y, -0.46 - systemsPhase * 0.28);
       marine.current.position.z = damp(marine.current.position.z, 0.15 + marinePhase * 0.6);
       marine.current.rotation.y = damp(marine.current.rotation.y, Math.sin(time * 0.12) * 0.085 + systemsPhase * -0.3);
+    }
+    if (cabin.current) {
+      const scale = 0.001 + cabinPhase * (compact ? 0.92 : 0.84);
+      cabin.current.visible = scale > 0.02;
+      cabin.current.scale.setScalar(damp(cabin.current.scale.x, scale));
+      cabin.current.position.y = damp(cabin.current.position.y, -0.08 + cabinPhase * 0.09);
+      cabin.current.position.z = damp(cabin.current.position.z, cabinPhase * 0.3);
+      cabin.current.rotation.y = damp(cabin.current.rotation.y, -0.12 + scroll * 0.055 + (reducedMotion ? 0 : pointer.current.x * 0.035));
+    }
+    if (cabinet.current) {
+      const scale = 0.001 + cabinetPhase * (compact ? 0.86 : 0.91);
+      cabinet.current.visible = scale > 0.02;
+      cabinet.current.scale.setScalar(damp(cabinet.current.scale.x, scale));
+      cabinet.current.position.y = damp(cabinet.current.position.y, cabinetPhase * 0.46);
+      cabinet.current.position.z = damp(cabinet.current.position.z, cabinetPhase * 0.45);
+      cabinet.current.rotation.y = damp(cabinet.current.rotation.y, 0.08 + scroll * 0.055 + (reducedMotion ? 0 : pointer.current.x * 0.045));
     }
     if (artifacts.current) {
       const scale = 0.001 + systemsPhase * 0.99 * (1 - closingPhase * 0.62);
@@ -550,6 +575,8 @@ function SceneDirector({ compact, reducedMotion }: { compact: boolean; reducedMo
       <OpticalBackdrop />
       <group ref={lens}><LiquidLens compact={compact} /></group>
       <group ref={controls} scale={0.83}><ControlCore /></group>
+      <group ref={cabin} scale={0.001} visible={false}><ShipBridge compact={compact} reducedMotion={reducedMotion} /></group>
+      <group ref={cabinet} scale={0.001} visible={false}><ControlCabinet compact={compact} reducedMotion={reducedMotion} /></group>
       <group ref={marine} scale={0.001} visible={false}><MarineEngine reducedMotion={reducedMotion} /></group>
       <group ref={artifacts} scale={0.001} visible={false}><AutomationArtifacts compact={compact} reducedMotion={reducedMotion} /></group>
     </group>
@@ -616,3 +643,4 @@ export function WorldCanvas({ fallback }: { fallback?: ReactNode }) {
     </Canvas>
   );
 }
+
