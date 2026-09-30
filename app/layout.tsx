@@ -6,6 +6,7 @@ import { ScrollDirector } from "@/components/scroll-director";
 import "./globals.css";
 import "./portfolio-effects.css";
 import "./liquid-glass.css";
+import "./glass-navigation.css";
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL || "https://amalj007.github.io/portfolio/";
@@ -64,4 +65,3 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
     </html>
   );
 }
-
