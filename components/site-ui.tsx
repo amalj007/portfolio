@@ -4,6 +4,8 @@ import { motion, useMotionValue, useReducedMotion, useSpring } from "framer-moti
 import type { PointerEvent as ReactPointerEvent, ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 
+import { NavigationLens } from "@/components/navigation-lens";
+
 const links = [
   ["About", "#about"],
   ["Expertise", "#skills"],
@@ -241,6 +243,8 @@ export function SiteHeader() {
       ref={header}
       className={"site-header" + (menuOpen ? " menu-open" : "") + (scrolled ? " is-scrolled" : "")}
     >
+      <NavigationLens />
+      <span className="navigation-optics" aria-hidden="true" />
       <a className="brand" href="#home" aria-label="Amal Joy, home" onClick={() => setMenuOpen(false)}>
         <span className="brand-mark" aria-hidden="true">
           <span>AJ</span>
@@ -311,7 +315,7 @@ export function SiteHeader() {
           rel="noopener noreferrer"
           aria-label="Open Amal Joy's resume in a new tab"
         >
-          Resume <span aria-hidden="true">↗</span>
+          Resume <span aria-hidden="true">?</span>
         </MagneticLink>
       </nav>
     </header>
@@ -421,3 +425,4 @@ export function Cursor() {
     </div>
   );
 }
+

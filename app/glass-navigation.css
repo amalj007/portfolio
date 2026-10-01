@@ -289,3 +289,85 @@
   .site-header .nav-toggle span,
   .site-header .nav-resume { transition: none; }
 }
+
+/* Clear liquid lens: refraction is isolated from text and the open menu. */
+.site-header,
+.site-header.is-scrolled {
+  background: rgba(8, 16, 25, 0.16);
+  border-color: rgba(233, 249, 255, 0.38);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.23),
+    inset 0 1px 1px rgba(255, 255, 255, 0.8),
+    inset 1px 0 1px rgba(230, 249, 255, 0.38),
+    inset 0 -1px 1px rgba(228, 249, 255, 0.54);
+}
+.site-header > .navigation-optics {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,.1), transparent 24%, transparent 72%, rgba(208,239,255,.08));
+  backdrop-filter: blur(3px) saturate(1.45);
+  -webkit-backdrop-filter: blur(3px) saturate(1.45);
+  box-shadow: inset 0 4px 7px -5px white, inset 0 -5px 8px -6px white;
+}
+@supports (backdrop-filter: url("#navigation-lens")) {
+  .site-header > .navigation-optics {
+    backdrop-filter: url("#navigation-lens") blur(2px) saturate(1.45);
+  }
+}
+/* WebKit uses the clear CSS lens when SVG backdrop refraction is unavailable. */
+@supports (-webkit-touch-callout: none) {
+  .site-header > .navigation-optics {
+    backdrop-filter: blur(3px) saturate(1.45);
+  }
+}
+.site-header::after {
+  inset: 1px;
+  background:
+    radial-gradient(ellipse 160px 65px at var(--glass-x, 18%) var(--glass-y, 0%), rgba(255,255,255,.28), transparent 75%),
+    linear-gradient(115deg, rgba(255,255,255,.12), transparent 17%, transparent 81%, rgba(176,230,255,.14));
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+  opacity: .85;
+}
+.site-header.is-scrolled { background-color: rgba(6, 13, 22, .28); }
+.site-header .brand-name,
+.site-header .site-nav,
+.site-header .brand-mark { text-shadow: 0 1px 8px rgba(0,0,0,.85); }
+.site-header .brand-name small { color: #d1dbe4; }
+.site-header .brand-mark,
+.site-header .nav-toggle,
+.site-nav .nav-resume,
+.nav-active-surface {
+  background: radial-gradient(ellipse at 26% 0%, rgba(255,255,255,.28), transparent 48%),
+    linear-gradient(165deg, rgba(255,255,255,.07), transparent 45%, rgba(178,226,255,.13));
+  border-color: rgba(239,250,255,.48);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,.7), inset 0 -2px 3px rgba(211,242,255,.23), 0 4px 12px rgba(0,0,0,.16);
+}
+.site-header .nav-toggle { transition: transform 350ms cubic-bezier(.2,.8,.2,1); }
+.site-header .nav-toggle:active { transform: scale(.92); }
+.site-header .site-nav a:focus-visible,
+.site-header .nav-toggle:focus-visible,
+.site-header .brand:focus-visible { outline: 2px solid #b1f6ff; outline-offset: 4px; }
+@media (max-width: 959px) {
+  .site-header > .site-nav {
+    background: linear-gradient(145deg, rgba(31,47,60,.75), rgba(7,15,25,.85));
+    backdrop-filter: blur(10px) saturate(1.4);
+    -webkit-backdrop-filter: blur(10px) saturate(1.4);
+    box-shadow: inset 0 1px 1px rgba(255,255,255,.6), inset 0 -1px 1px rgba(214,246,255,.25), 0 24px 50px rgba(0,0,0,.35);
+  }
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .site-header, .site-header.is-scrolled { background: rgba(12,21,31,.95); }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .site-header, .site-header.is-scrolled { background: #101923; }
+  .site-header > .navigation-optics { backdrop-filter: none; -webkit-backdrop-filter: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-header .nav-toggle { transition: none; }
+  .site-header .nav-toggle:active { transform: none; }
+}
+
