@@ -1,6 +1,7 @@
 import { MagneticLink } from "@/components/site-ui";
 import { ProjectCard } from "@/components/project-card";
 import { ContactForm } from "@/components/contact-form";
+import { LiquidEmblem } from "@/components/liquid-effects";
 
 const resumeUrl =
   (process.env.NEXT_PUBLIC_BASE_PATH || "") +
@@ -255,12 +256,12 @@ function ProjectArt({
               />
             </pattern>
             <linearGradient id={pid + "-beam"} x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stopColor="#b9fff0" />
-              <stop offset=".48" stopColor="#72e5cb" />
-              <stop offset="1" stopColor="#4d92d8" />
+              <stop offset="0" stopColor="#dff5ff" />
+              <stop offset=".48" stopColor="#5abfff" />
+              <stop offset="1" stopColor="#4474f4" />
             </linearGradient>
           </defs>
-          <rect width="620" height="330" fill="#0b1517" />
+          <rect width="620" height="330" fill="#0a1b35" />
           <rect width="620" height="330" fill={"url(#" + pid + "-grid)"} />
           <path d="M0 282H620M0 44H620" stroke="rgba(220,255,245,.12)" />
           <circle
@@ -455,10 +456,8 @@ export function Portfolio() {
                 <span>REPRESENTATIVE PHOTOGRAPHY</span>
               </figcaption>
             </figure>
-            <div className="hero-description hero-intro">
-              <span className="hero-asterisk" aria-hidden="true">
-                ✳
-              </span>
+            <div className="hero-description hero-intro glass-surface">
+              <LiquidEmblem />
               <p>I build the logic behind what moves.</p>
               <p className="hero-summary">
                 Intelligent automation for marine vessels, aerospace facilities,
@@ -511,7 +510,7 @@ export function Portfolio() {
               </MagneticLink>
             </div>
           </div>
-          <div className="proof-stats" data-reveal>
+          <div className="proof-stats glass-surface" data-reveal>
             <div className="proof-stat">
               <span className="proof-stat-value">07</span>
               <span className="mono-label">SELECTED SYSTEMS</span>
@@ -678,7 +677,7 @@ export function Portfolio() {
             <div className="timeline">
               {experience.map((item) => (
                 <article
-                  className="timeline-item"
+                  className="timeline-item glass-surface"
                   key={item.company}
                   data-reveal
                 >
@@ -720,7 +719,11 @@ export function Portfolio() {
           </div>
           <div className="stack-grid">
             {platformStack.map((platform) => (
-              <article className="stack-card" key={platform.group} data-reveal>
+              <article
+                className="stack-card glass-surface"
+                key={platform.group}
+                data-reveal
+              >
                 <p className="mono-label">{platform.group}</p>
                 <h3>{platform.title}</h3>
                 <ul>
@@ -744,7 +747,7 @@ export function Portfolio() {
         >
           <SectionLabel number="06" name="ALWAYS BUILDING KNOWLEDGE" />
           <div className="credentials-layout">
-            <div className="education-card" data-reveal>
+            <div className="education-card glass-surface" data-reveal>
               <p className="eyebrow">EDUCATION / 2020—2024</p>
               <h2 id="certifications-title">
                 Robotics &<br />

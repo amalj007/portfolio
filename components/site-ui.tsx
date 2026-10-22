@@ -197,7 +197,7 @@ export function SiteHeader() {
     <header
       ref={header}
       className={
-        "site-header" +
+        "site-header glass-surface" +
         (menuOpen ? " menu-open" : "") +
         (scrolled ? " is-scrolled" : "")
       }

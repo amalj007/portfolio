@@ -4,6 +4,8 @@ import { Cursor, ScrollProgress, SiteHeader } from "@/components/site-ui";
 import { SmoothScroll } from "@/components/smooth-scroll";
 import { ScrollDirector } from "@/components/scroll-director";
 import "./globals.css";
+import "./blue-glass.css";
+import { LiquidEffects } from "@/components/liquid-effects";
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL || "https://amalj007.github.io/portfolio/";
@@ -41,8 +43,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f3f2ec",
-  colorScheme: "light",
+  themeColor: "#061329",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({
@@ -51,6 +53,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <LiquidEffects />
         <a className="skip-link" href="#main">
           Skip to content
         </a>
