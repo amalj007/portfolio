@@ -1,21 +1,25 @@
 "use client";
 
-import { motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+} from "framer-motion";
 import type { PointerEvent as ReactPointerEvent, ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 
-import { NavigationLens } from "@/components/navigation-lens";
-
 const links = [
+  ["Work", "#projects"],
   ["About", "#about"],
   ["Expertise", "#skills"],
   ["Experience", "#experience"],
-  ["Selected work", "#projects"],
   ["Contact", "#contact"],
 ] as const;
 
 const resumeUrl =
-  (process.env.NEXT_PUBLIC_BASE_PATH || "") + "/assets/docs/Amal_Joy_Resume.pdf";
+  (process.env.NEXT_PUBLIC_BASE_PATH || "") +
+  "/assets/docs/Amal_Joy_Resume.pdf";
 
 type MagneticLinkProps = {
   href: string;
@@ -63,7 +67,10 @@ export function MagneticLink({
       y.set(0);
     };
     // Nested scroll regions can move a link without another pointer-enter event.
-    window.addEventListener("scroll", invalidateBounds, { capture: true, passive: true });
+    window.addEventListener("scroll", invalidateBounds, {
+      capture: true,
+      passive: true,
+    });
     window.addEventListener("resize", invalidateBounds, { passive: true });
     return () => {
       window.removeEventListener("scroll", invalidateBounds, true);
@@ -114,7 +121,10 @@ export function SiteHeader() {
   useEffect(() => {
     const mobile = window.matchMedia("(max-width: 959px)");
     const updateViewport = () => {
-      if (mobile.matches && header.current?.querySelector("nav")?.contains(document.activeElement)) {
+      if (
+        mobile.matches &&
+        header.current?.querySelector("nav")?.contains(document.activeElement)
+      ) {
         toggle.current?.focus({ preventScroll: true });
       }
       setIsMobile(mobile.matches);
@@ -134,7 +144,10 @@ export function SiteHeader() {
       }
     };
     const closeOutside = (event: Event) => {
-      if (event.target instanceof Node && !header.current?.contains(event.target)) {
+      if (
+        event.target instanceof Node &&
+        !header.current?.contains(event.target)
+      ) {
         setMenuOpen(false);
       }
     };
@@ -180,76 +193,21 @@ export function SiteHeader() {
     };
   }, []);
 
-  useEffect(() => {
-    if (reducedMotion || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
-    const surfaces = [
-      ".site-header", ".glass-card", ".skill-card", ".stack-card",
-      ".project-card", ".message-form", ".message-field", ".timeline-item",
-      ".button", ".nav-resume", ".certification-row", ".field-note", ".brand-mark",
-      ".education-card", ".contact-panel", "[data-glass-reflection]",
-    ].join(",");
-    let frame = 0;
-    let previous: HTMLElement | null = null;
-    let pending: HTMLElement | null = null;
-    let pointerX = 0;
-    let pointerY = 0;
-
-    const reset = (element: HTMLElement) => {
-      element.style.setProperty("--glass-x", "82%");
-      element.style.setProperty("--glass-y", "0%");
-    };
-    const update = () => {
-      frame = 0;
-      // Read only the latest surface once per frame, before writing any styles.
-      const surface = pending;
-      const bounds = surface?.getBoundingClientRect();
-      if (previous && previous !== surface) reset(previous);
-      previous = surface;
-      if (!surface || !bounds || !bounds.width || !bounds.height) return;
-      const x = Math.max(0, Math.min(100, ((pointerX - bounds.left) / bounds.width) * 100));
-      const y = Math.max(0, Math.min(100, ((pointerY - bounds.top) / bounds.height) * 100));
-      surface.style.setProperty("--glass-x", x.toFixed(1) + "%");
-      surface.style.setProperty("--glass-y", y.toFixed(1) + "%");
-    };
-    const onPointerMove = (event: PointerEvent) => {
-      if (event.pointerType === "touch") return;
-      const target = event.target;
-      pending = target instanceof Element ? target.closest<HTMLElement>(surfaces) : null;
-      pointerX = event.clientX;
-      pointerY = event.clientY;
-      if (!frame) frame = window.requestAnimationFrame(update);
-    };
-    const onPointerLeave = () => {
-      if (frame) window.cancelAnimationFrame(frame);
-      frame = 0;
-      if (previous) reset(previous);
-      previous = null;
-      pending = null;
-    };
-
-    document.addEventListener("pointermove", onPointerMove, { passive: true });
-    document.documentElement.addEventListener("pointerleave", onPointerLeave);
-    window.addEventListener("blur", onPointerLeave);
-    return () => {
-      onPointerLeave();
-      document.removeEventListener("pointermove", onPointerMove);
-      document.documentElement.removeEventListener("pointerleave", onPointerLeave);
-      window.removeEventListener("blur", onPointerLeave);
-    };
-  }, [reducedMotion]);
-
   return (
     <header
       ref={header}
-      className={"site-header" + (menuOpen ? " menu-open" : "") + (scrolled ? " is-scrolled" : "")}
+      className={
+        "site-header" +
+        (menuOpen ? " menu-open" : "") +
+        (scrolled ? " is-scrolled" : "")
+      }
     >
-      <NavigationLens />
-      <span className="navigation-optics" aria-hidden="true" />
-      <a className="brand" href="#home" aria-label="Amal Joy, home" onClick={() => setMenuOpen(false)}>
-        <span className="brand-mark" aria-hidden="true">
-          <span>AJ</span>
-          <i />
-        </span>
+      <a
+        className="brand"
+        href="#home"
+        aria-label="Amal Joy, home"
+        onClick={() => setMenuOpen(false)}
+      >
         <span className="brand-name">
           <strong>AMAL JOY</strong>
           <small>ROBOTICS / AUTOMATION</small>
@@ -276,16 +234,24 @@ export function SiteHeader() {
         aria-hidden={isMobile && !menuOpen ? true : undefined}
         inert={isMobile && !menuOpen}
         onClick={(event) => {
-          const anchor = event.target instanceof Element ? event.target.closest("a") : null;
+          const anchor =
+            event.target instanceof Element ? event.target.closest("a") : null;
           if (!anchor) return;
           if (isMobile && menuOpen) {
             const href = anchor.getAttribute("href");
-            const destination = href?.startsWith("#") ? document.getElementById(href.slice(1)) : null;
-            const focusTarget = destination?.querySelector<HTMLElement>("h1, h2") || destination;
+            const destination = href?.startsWith("#")
+              ? document.getElementById(href.slice(1))
+              : null;
+            const focusTarget =
+              destination?.querySelector<HTMLElement>("h1, h2") || destination;
             if (focusTarget) {
               if (!focusTarget.hasAttribute("tabindex")) {
                 focusTarget.setAttribute("tabindex", "-1");
-                focusTarget.addEventListener("blur", () => focusTarget.removeAttribute("tabindex"), { once: true });
+                focusTarget.addEventListener(
+                  "blur",
+                  () => focusTarget.removeAttribute("tabindex"),
+                  { once: true },
+                );
               }
               focusTarget.focus({ preventScroll: true });
             } else {
@@ -296,7 +262,13 @@ export function SiteHeader() {
         }}
       >
         {links.map(([label, href]) => (
-          <a href={href} key={href} aria-current={activeSection === href.slice(1) ? "location" : undefined}>
+          <a
+            href={href}
+            key={href}
+            aria-current={
+              activeSection === href.slice(1) ? "location" : undefined
+            }
+          >
             {activeSection === href.slice(1) && (
               <motion.span
                 className="nav-active-surface"
@@ -315,7 +287,7 @@ export function SiteHeader() {
           rel="noopener noreferrer"
           aria-label="Open Amal Joy's resume in a new tab"
         >
-          Resume <span aria-hidden="true">?</span>
+          Resume <span aria-hidden="true">↗</span>
         </MagneticLink>
       </nav>
     </header>
@@ -385,7 +357,11 @@ export function Cursor() {
         frame = 0;
         if (!element) return;
         element.style.transform =
-          "translate3d(" + clientX + "px, " + clientY + "px, 0) translate(-50%, -50%)";
+          "translate3d(" +
+          clientX +
+          "px, " +
+          clientY +
+          "px, 0) translate(-50%, -50%)";
         element.classList.add("is-visible");
       });
     };
@@ -425,4 +401,3 @@ export function Cursor() {
     </div>
   );
 }
-

@@ -4,10 +4,6 @@ import { Cursor, ScrollProgress, SiteHeader } from "@/components/site-ui";
 import { SmoothScroll } from "@/components/smooth-scroll";
 import { ScrollDirector } from "@/components/scroll-director";
 import "./globals.css";
-import "./portfolio-effects.css";
-import "./liquid-glass.css";
-import "./glass-navigation.css";
-import "./photographic-scene.css";
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL || "https://amalj007.github.io/portfolio/";
@@ -45,11 +41,13 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#050505",
-  colorScheme: "dark",
+  themeColor: "#f3f2ec",
+  colorScheme: "light",
 };
 
-export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
+export default function RootLayout({
+  children,
+}: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en">
       <body>
@@ -66,4 +64,3 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
     </html>
   );
 }
-
