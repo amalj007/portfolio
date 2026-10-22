@@ -1,15 +1,14 @@
 # Amal Joy — Robotics & Automation Engineer
 
-A single-page portfolio built around one continuous systems narrative: control engineering, field experience, marine automation, and selected aerospace and industrial projects.
+A single-page portfolio for Amal Joy's marine, aerospace, and industrial automation work. The design combines oversized typography, a deep blue palette, translucent liquid-glass surfaces, and locally optimized engineering photography.
 
 ## Stack
 
-- Next.js 15 App Router with TypeScript and a static export
-- React Three Fiber / Three.js for the interactive control and propulsion scene
-- GSAP + ScrollTrigger for reveals, the pinned horizontal project archive, and scroll progress
-- Lenis for smooth wheel scrolling, connected to ScrollTrigger
-- Tailwind CSS plus a custom glass-and-cyan visual system
-- Framer Motion for the magnetic resume and contact links
+- Next.js 15 App Router, React, and TypeScript with a static export
+- GSAP + ScrollTrigger for text entrances, scroll-linked reading, and image parallax
+- Lenis for smooth wheel scrolling with native touch and keyboard navigation
+- Framer Motion for magnetic links, spring-based card tilt, sliding glass navigation, and expandable project notes
+- Tailwind CSS and custom responsive CSS with backdrop blur, glossy edges, and blue ambient light
 
 ## Run locally
 
@@ -18,16 +17,18 @@ Use Node.js 22 and pnpm 11:
     pnpm install
     pnpm dev
 
-To build the static files locally:
+Build the static files:
 
     pnpm build
 
 ## Publish
 
-GitHub Pages deploys the static export through .github/workflows/deploy.yml. The repository Pages source must be set to GitHub Actions. The workflow builds with /portfolio as the base path and publishes the out/ directory.
+GitHub Pages deploys the static export through `.github/workflows/deploy.yml`. The workflow builds with `/portfolio` as the base path and publishes `out/`. Pull requests run the same build without changing the live website. Merging to `main` publishes the update.
 
-For a host that serves the site from its domain root, leave NEXT_PUBLIC_BASE_PATH unset. A Vercel project can use the same Next.js static build; set NEXT_PUBLIC_SITE_URL to its public origin to generate the matching canonical and sitemap URLs.
+For hosting at a domain root, leave `NEXT_PUBLIC_BASE_PATH` unset. Set `NEXT_PUBLIC_SITE_URL` to the public origin for matching canonical and sitemap URLs.
 
 ## Accessibility and motion
 
-The page keeps native anchors and keyboard navigation, provides a skip link and a mobile menu, respects prefers-reduced-motion, and uses a static scene fallback when WebGL is unavailable. The decorative Three.js canvas is capped at a 1.4 device-pixel ratio and does not load external image assets.
+Content is present in the server HTML and remains readable if animation code is unavailable. The site includes native anchors, a skip link, a keyboard-accessible mobile menu, labeled contact fields, and expandable project notes. It respects `prefers-reduced-motion`, with no pinned scrolling or forced touch-scroll animation. Pointer reflections and card tilt update during interaction; slow CSS ambient effects provide background movement. Reduced-motion preferences also stop the ambient effects and pointer lighting.
+
+The contact form opens a draft in the visitor's email application. It does not submit messages to a server. Photography represents engineering contexts; it does not claim to depict Amal's installations. See `PHOTO_CREDITS.md` for sources and licensing.

@@ -14,7 +14,9 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     let refreshFrame = 0;
 
     const scrollToPosition = (event: Event) => {
-      const detail = (event as CustomEvent<{ top: number; immediate?: boolean }>).detail;
+      const detail = (
+        event as CustomEvent<{ top: number; immediate?: boolean }>
+      ).detail;
       if (!detail) return;
       const { top, immediate = false } = detail;
       if (!Number.isFinite(top)) return;
@@ -36,8 +38,15 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
         import("gsap/ScrollTrigger"),
       ]).catch(() => null);
       // Native scrolling remains available if an optional animation chunk fails.
-      if (!runtime || cancelled || currentGeneration !== generation || reducedMotion.matches) return;
-      const [{ default: LenisConstructor }, { gsap }, { ScrollTrigger }] = runtime;
+      if (
+        !runtime ||
+        cancelled ||
+        currentGeneration !== generation ||
+        reducedMotion.matches
+      )
+        return;
+      const [{ default: LenisConstructor }, { gsap }, { ScrollTrigger }] =
+        runtime;
 
       gsap.registerPlugin(ScrollTrigger);
       const lenis = new LenisConstructor({
@@ -46,8 +55,6 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
         smoothWheel: true,
         syncTouch: false,
         anchors: { offset: -100 },
-        // Preserve native gestures and keyboard scrolling inside the carousel.
-        prevent: (node) => !!node.closest('[data-scroll-mode="native"] .project-track'),
       });
       instance = lenis;
       const updateScroll = () => ScrollTrigger.update();
@@ -68,7 +75,9 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
       refreshFrame = requestAnimationFrame(() => ScrollTrigger.refresh());
     }
 
-    const updateMotionPreference = () => { void initialize(); };
+    const updateMotionPreference = () => {
+      void initialize();
+    };
     reducedMotion.addEventListener("change", updateMotionPreference);
     window.addEventListener("portfolio:scroll-to", scrollToPosition);
     void initialize();

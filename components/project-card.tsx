@@ -1,41 +1,81 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import type { PointerEvent as ReactPointerEvent, ReactNode } from "react";
-import { useEffect, useRef, useState } from "react";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+} from "framer-motion";
+import type { PointerEvent, ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-type ProjectCardProps = {
-  id: string;
-  systemNote: string;
-  children: ReactNode;
-};
+type ProjectCardProps = { id: string; systemNote: string; children: ReactNode };
 
 export function ProjectCard({ id, systemNote, children }: ProjectCardProps) {
   const [expanded, setExpanded] = useState(false);
-  const [scrollable, setScrollable] = useState(false);
-  const card = useRef<HTMLElement>(null);
   const mounted = useRef(false);
+  const card = useRef<HTMLElement>(null);
+  const bounds = useRef<DOMRect | null>(null);
+  const pointerActive = useRef(false);
   const reduceMotion = useReducedMotion();
+  const tiltX = useMotionValue(0);
+  const tiltY = useMotionValue(0);
+  const lift = useMotionValue(0);
+  const springConfig = { stiffness: 180, damping: 24, mass: 0.7 };
+  const rotateX = useSpring(tiltX, springConfig);
+  const rotateY = useSpring(tiltY, springConfig);
+  const y = useSpring(lift, springConfig);
   const detailId = "project-details-" + id;
 
-  function handlePointerMove(event: ReactPointerEvent<HTMLElement>) {
-    if (reduceMotion || event.pointerType === "touch") return;
-    const bounds = event.currentTarget.getBoundingClientRect();
-    const x = (event.clientX - bounds.left) / bounds.width;
-    const y = (event.clientY - bounds.top) / bounds.height;
-    event.currentTarget.style.setProperty("--spot-x", (x * 100).toFixed(1) + "%");
-    event.currentTarget.style.setProperty("--spot-y", (y * 100).toFixed(1) + "%");
-  }
+  const resetPointer = useCallback(() => {
+    pointerActive.current = false;
+    bounds.current = null;
+    tiltX.set(0);
+    tiltY.set(0);
+    lift.set(0);
+    card.current?.style.setProperty("--glass-x", "50%");
+    card.current?.style.setProperty("--glass-y", "50%");
+    card.current?.style.setProperty("--glass-hover", "0");
+  }, [lift, tiltX, tiltY]);
 
-  function resetLight() {
-    card.current?.style.setProperty("--spot-x", "50%");
-    card.current?.style.setProperty("--spot-y", "50%");
+  function updatePointer(event: PointerEvent<HTMLElement>) {
+    if (!pointerActive.current) return;
+    if (
+      reduceMotion ||
+      event.pointerType === "touch" ||
+      !window.matchMedia("(hover: hover) and (pointer: fine)").matches
+    ) {
+      resetPointer();
+      return;
+    }
+
+    const rect = (bounds.current ??=
+      event.currentTarget.getBoundingClientRect());
+    const localX = Math.min(
+      1,
+      Math.max(0, (event.clientX - rect.left) / rect.width),
+    );
+    const localY = Math.min(
+      1,
+      Math.max(0, (event.clientY - rect.top) / rect.height),
+    );
+    tiltX.set((0.5 - localY) * 5);
+    tiltY.set((localX - 0.5) * 5);
+    lift.set(-5);
+    event.currentTarget.style.setProperty("--glass-x", `${localX * 100}%`);
+    event.currentTarget.style.setProperty("--glass-y", `${localY * 100}%`);
+    event.currentTarget.style.setProperty("--glass-hover", "1");
   }
 
   function refreshLayout() {
-    void import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => {
-      if (mounted.current) ScrollTrigger.refresh();
-    });
+    void import("gsap/ScrollTrigger")
+      .then(({ ScrollTrigger }) => {
+        if (mounted.current) ScrollTrigger.refresh();
+      })
+      .catch(() => {
+        /* Expansion also works with native scrolling. */
+      });
   }
 
   useEffect(() => {
@@ -46,29 +86,51 @@ export function ProjectCard({ id, systemNote, children }: ProjectCardProps) {
   }, []);
 
   useEffect(() => {
-    const element = card.current;
-    if (!element) return;
-    const updateOverflow = () => setScrollable(element.scrollHeight > element.clientHeight + 1);
-    // Observe the contents too: an expanded note can grow inside a capped card.
-    const observer = new ResizeObserver(updateOverflow);
-    observer.observe(element);
-    Array.from(element.children).forEach((child) => observer.observe(child));
-    updateOverflow();
-    return () => observer.disconnect();
+    const invalidateBounds = () => {
+      bounds.current = null;
+    };
+    window.addEventListener("scroll", invalidateBounds, {
+      passive: true,
+      capture: true,
+    });
+    window.addEventListener("resize", invalidateBounds, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", invalidateBounds, true);
+      window.removeEventListener("resize", invalidateBounds);
+    };
+  }, []);
+
+  useEffect(() => {
+    bounds.current = null;
   }, [expanded]);
+
+  useEffect(() => {
+    resetPointer();
+    if (reduceMotion) {
+      rotateX.jump(0);
+      rotateY.jump(0);
+      y.jump(0);
+    }
+  }, [reduceMotion, resetPointer, rotateX, rotateY, y]);
 
   return (
     <motion.article
       ref={card}
-      className="project-card glass-card"
-      data-reveal
-      data-lenis-prevent-wheel={scrollable ? "" : undefined}
-      style={{ "--spot-x": "50%", "--spot-y": "50%" } as React.CSSProperties}
-      onPointerMove={handlePointerMove}
-      onPointerLeave={resetLight}
-      onPointerCancel={resetLight}
-      whileHover={reduceMotion ? undefined : { y: -7 }}
-      transition={{ type: "spring", stiffness: 180, damping: 21 }}
+      className={"project-card glass-surface project-card-" + id}
+      style={{
+        transformPerspective: 1400,
+        rotateX: reduceMotion ? 0 : rotateX,
+        rotateY: reduceMotion ? 0 : rotateY,
+        y: reduceMotion ? 0 : y,
+      }}
+      onPointerEnter={(event) => {
+        pointerActive.current = true;
+        bounds.current = null;
+        updatePointer(event);
+      }}
+      onPointerMove={updatePointer}
+      onPointerLeave={resetPointer}
+      onPointerCancel={resetPointer}
     >
       {children}
       <button
@@ -86,10 +148,13 @@ export function ProjectCard({ id, systemNote, children }: ProjectCardProps) {
           <motion.div
             id={detailId}
             className="project-expanded"
-            initial={reduceMotion ? false : { height: 0, opacity: 0, y: 8 }}
-            animate={{ height: "auto", opacity: 1, y: 0 }}
-            exit={{ height: 0, opacity: 0, y: 6 }}
-            transition={{ duration: reduceMotion ? 0 : 0.42, ease: [0.22, 1, 0.36, 1] }}
+            initial={reduceMotion ? false : { height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{
+              duration: reduceMotion ? 0 : 0.42,
+              ease: [0.22, 1, 0.36, 1],
+            }}
             onAnimationComplete={refreshLayout}
           >
             <span className="mono-label">SYSTEM VIEW / {id}</span>
@@ -100,4 +165,3 @@ export function ProjectCard({ id, systemNote, children }: ProjectCardProps) {
     </motion.article>
   );
 }
-
